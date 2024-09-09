@@ -1,5 +1,4 @@
 import {
-    Button,
     Drawer, DrawerBody,
     DrawerContent,
     DrawerHeader,
@@ -12,10 +11,10 @@ const NavMenu = () => {
     return (
         <>
             <IconButton aria-label={"Open navigation menu"} icon={<HamburgerIcon/>} onClick={onOpen}/>
-            <Drawer placement={"left"} onClose={onClose} isOpen={isOpen}>
+            <Drawer size={"xs"} placement={"left"} onClose={onClose} isOpen={isOpen}>
                 <DrawerOverlay/>
                 <DrawerContent>
-                    <DrawerHeader borderBottomWidth='1px'>Basic Drawer</DrawerHeader>
+                    <DrawerHeader borderBottomWidth='1px'>Hubs</DrawerHeader>
                     <DrawerBody>
                         <p>Some contents...</p>
                         <p>Some contents...</p>
