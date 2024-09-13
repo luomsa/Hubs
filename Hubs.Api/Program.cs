@@ -54,11 +54,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 
 });
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SupportNonNullableReferenceTypes();
+});
 builder.Services.AddScoped<IHubService, HubService>();
 // builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
-app.UseMiddleware<GlobalRoutePrefixMiddleware>("/api");
-app.UsePathBase(new PathString("/api"));
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
