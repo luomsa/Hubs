@@ -3,6 +3,7 @@ import App from "../App.tsx";
 import Home from "./Home.tsx";
 import client from "../api/http.ts";
 import Hub from "./Hub.tsx";
+import Popular from "./Popular.tsx";
 
 const router = createBrowserRouter([
     {
@@ -11,6 +12,9 @@ const router = createBrowserRouter([
         children: [{
             path: "",
             element: <Home/>,
+        }, {
+            path: "/popular",
+            element: <Popular/>
         }, {
             path: "/hub/:name",
             loader: async ({params}) => {
