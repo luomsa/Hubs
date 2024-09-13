@@ -25,5 +25,7 @@ public class HubDbContext: IdentityDbContext
         builder.Entity<HubMember>().Property(hm => hm.JoinedAt).HasDefaultValueSql("now()");
         builder.Entity<Post>().Property(p => p.CreatedAt).HasDefaultValueSql("now()");
         builder.Entity<Comment>().Property(c => c.CreatedAt).HasDefaultValueSql("now()");
+        builder.Entity<User>().Property(u => u.UserName).IsRequired();
+        builder.Entity<User>().Property(u => u.NormalizedUserName).IsRequired();
     }
 }
