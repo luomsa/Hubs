@@ -41,7 +41,7 @@ public class HubService : IHubService
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             throw;
         }
