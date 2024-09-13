@@ -1,11 +1,12 @@
 ﻿using Hubs.Api.Data;
+using Hubs.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hubs.Api.Controllers;
 [ApiController]
-[Route("users")]
+[Route("api/users")]
 public class UserController : ControllerBase
 {
     private readonly SignInManager<User> _signInManager;
@@ -18,6 +19,7 @@ public class UserController : ControllerBase
     [Authorize]
     [Route("me")]
     [HttpGet]
+    [ProducesResponseType<UserDto>(StatusCodes.Status200OK)]
     public async Task<IResult> GetCurrentUser()
     {
         var user = await _signInManager.UserManager.GetUserAsync(HttpContext.User);
@@ -26,7 +28,7 @@ public class UserController : ControllerBase
             return TypedResults.Unauthorized();
         }
 
-        return TypedResults.Ok(new { Username = user.UserName, Id = user.Id });
+        return TypedResults.Ok(new UserDto() { Username = user.UserName, UserId = user.Id });
     }
 
     [Authorize]

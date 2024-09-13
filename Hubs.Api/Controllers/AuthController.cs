@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hubs.Api.Controllers;
+
 [ApiController]
-[Route("auth")]
+[Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly SignInManager<User> _signInManager;
@@ -23,12 +24,13 @@ public class AuthController : ControllerBase
         if (user is not null)
         {
             var userExistsProblem =
-                ProblemDetailsFactory.CreateProblemDetails(HttpContext,StatusCodes.Status409Conflict,
+                ProblemDetailsFactory.CreateProblemDetails(HttpContext, StatusCodes.Status409Conflict,
                     "Username is already taken");
             return TypedResults.Conflict(userExistsProblem);
         }
 
-        var result = await _signInManager.UserManager.CreateAsync(new User() { UserName = request.Username }, request.Password);
+        var result =
+            await _signInManager.UserManager.CreateAsync(new User() { UserName = request.Username }, request.Password);
         if (result.Succeeded)
         {
             return TypedResults.Ok();
@@ -36,16 +38,17 @@ public class AuthController : ControllerBase
 
         return TypedResults.BadRequest();
     }
+
     [Route("login")]
     [HttpPost]
     public async Task<IResult> Login(AuthRequest request)
     {
         var user = await _signInManager.UserManager.FindByNameAsync(request.Username);
+        var wrongUserProblem =
+            ProblemDetailsFactory.CreateProblemDetails(HttpContext, StatusCodes.Status409Conflict,
+                "Wrong username or password");
         if (user is null)
         {
-            var wrongUserProblem =
-                ProblemDetailsFactory.CreateProblemDetails(HttpContext,StatusCodes.Status409Conflict,
-                    "Wrong username or password");
             return TypedResults.Json(wrongUserProblem, statusCode: StatusCodes.Status401Unauthorized);
         }
 
@@ -54,8 +57,7 @@ public class AuthController : ControllerBase
         {
             return TypedResults.Ok();
         }
-
-        return TypedResults.BadRequest();
+        return TypedResults.Json(wrongUserProblem, statusCode: StatusCodes.Status401Unauthorized);
     }
 
     [Route("logout")]

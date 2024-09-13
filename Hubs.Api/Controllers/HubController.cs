@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Hubs.Api.Controllers;
 
 [ApiController]
-[Route("hubs")]
+[Route("api/hubs")]
 public class HubController : ControllerBase
 {
     private readonly IHubService _hubService;
@@ -31,11 +31,11 @@ public class HubController : ControllerBase
         return TypedResults.Ok();
     }
 
-    [Route("{username}")]
+    [Route("{name}")]
     [HttpGet]
-    public async Task<IResult> GetHubByName(string username)
+    public async Task<IResult> GetHubByName(string name)
     {
-        var result = await _hubService.GetByNameAsync(username);
+        var result = await _hubService.GetByNameAsync(name);
         return result is null ? TypedResults.NotFound() : TypedResults.Ok(result);
     }
 }
