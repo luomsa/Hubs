@@ -261,7 +261,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["PostDto"];
+                        "application/json": components["schemas"]["PostDto"];
+                        "text/json": components["schemas"]["PostDto"];
+                    };
                 };
             };
         };
@@ -494,11 +498,11 @@ export interface components {
             totalLikes: number;
             /** Format: int32 */
             postId: number;
+            /** Format: date-time */
+            createdAt: string;
             hub: string;
             readonly url: string;
             type: components["schemas"]["PostType"];
-            /** Format: date-time */
-            createdAt: string;
         };
         /** @enum {string} */
         PostType: "Text" | "Image";
