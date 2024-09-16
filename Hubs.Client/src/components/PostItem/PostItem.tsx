@@ -25,7 +25,7 @@ const PostItem = (props: PostDto) => {
           </Link>
         </p>
         {props.type === "Image" ? (
-          <img alt={"image"} src={props.content} />
+          <img className={styles.img} alt={"image"} src={props.content} />
         ) : (
           <p>{props.content}</p>
         )}
