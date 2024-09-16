@@ -23,4 +23,6 @@ public class User : IdentityUser
 
     public DateTime CreatedAt { get; set; }
     public ICollection<HubMember> HubMembers { get; set; } = [];
+    public ICollection<Post> Posts { get; set; } = [];
+    public ICollection<Comment> Comments { get; set; } = [];
 }
