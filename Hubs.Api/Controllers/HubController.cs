@@ -12,12 +12,14 @@ namespace Hubs.Api.Controllers;
 public class HubController : ControllerBase
 {
     private readonly IHubService _hubService;
+    private readonly IPostService _postService;
     private readonly UserManager<User> _userManager;
 
-    public HubController(IHubService hubService, UserManager<User> userManager)
+    public HubController(IHubService hubService, UserManager<User> userManager, IPostService postService)
     {
         _hubService = hubService;
         _userManager = userManager;
+        _postService = postService;
     }
 
     [Authorize]
@@ -33,9 +35,20 @@ public class HubController : ControllerBase
 
     [Route("{name}")]
     [HttpGet]
+    [ProducesResponseType<HubDto>(StatusCodes.Status200OK)]
     public async Task<IResult> GetHubByName(string name)
     {
         var result = await _hubService.GetByNameAsync(name);
         return result is null ? TypedResults.NotFound() : TypedResults.Ok(result);
     }
+
+    [Route("{name}/posts")]
+    [HttpGet]
+    [ProducesResponseType<List<PostDto>>(StatusCodes.Status200OK)]
+    public async Task<IResult> GetHubPosts(string name)
+    {
+        var posts = await _postService.GetHubPostsAsync(name);
+        return TypedResults.Ok(posts);
+    }
+    
 }

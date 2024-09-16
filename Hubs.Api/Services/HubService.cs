@@ -49,6 +49,6 @@ public class HubService : IHubService
 
     public async Task<HubDto?> GetByNameAsync(string name)
     {
-        return await _context.Hubs.Where(hub => hub.Name.ToLower().Equals(name.ToLower())).Select(hub => new HubDto(hub.Name, hub.Description, hub.HubMembers.Count)).FirstOrDefaultAsync();
+        return await _context.Hubs.Where(hub => hub.Name.ToLower().Equals(name.ToLower())).Select(hub => new HubDto() {Name =hub.Name, Description = hub.Description, TotalMembers = hub.HubMembers.Count}).FirstOrDefaultAsync();
     }
 }
