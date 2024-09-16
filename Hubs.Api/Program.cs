@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Hubs.Api;
 using Hubs.Api.Data;
 using Hubs.Api.Services;
@@ -16,11 +17,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers(options =>
 {
     options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
-});
-builder.Services.AddRouting(options =>
-{
-    options.LowercaseUrls = true;
-});
+}).AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
+;
+builder.Services.AddRouting(options => { options.LowercaseUrls = true; });
 var connectionString = builder.Configuration["HUB_CONNECTION_STRING"];
 builder.Services.AddDbContext<HubDbContext>(options => { options.UseNpgsql(connectionString); });
 builder.Services.AddIdentity<User, IdentityRole>(options =>
@@ -52,13 +51,13 @@ builder.Services.ConfigureApplicationCookie(options =>
             problemFactory.CreateProblemDetails(context.HttpContext, StatusCodes.Status403Forbidden, "Forbidden");
         return context.Response.WriteAsJsonAsync(problem);
     };
+});
 
-});
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SupportNonNullableReferenceTypes();
-});
+builder.Services.AddSwaggerGen(options => { options.SupportNonNullableReferenceTypes(); });
 builder.Services.AddScoped<IHubService, HubService>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IHubService, HubService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 // builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
