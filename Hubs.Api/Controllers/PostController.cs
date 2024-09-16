@@ -29,6 +29,7 @@ public class PostController : ControllerBase
     [Authorize]
     [Route("")]
     [HttpPost]
+    [ProducesResponseType<PostDto>(StatusCodes.Status200OK)]
     public async Task<IResult> CreatePost(NewPostRequest request)
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
