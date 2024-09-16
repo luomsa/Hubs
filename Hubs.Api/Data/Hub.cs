@@ -7,4 +7,5 @@ public class Hub
     public required string Description { get; set; }
     public DateTime CreatedAt { get; set; }
     public ICollection<HubMember> HubMembers { get; set; } = [];
+    public ICollection<Post> Posts { get; set; } = [];
 }
