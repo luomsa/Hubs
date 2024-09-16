@@ -6,6 +6,8 @@ import Popular from "./Popular.tsx";
 import SubmitPost from "./SubmitPost/SubmitPost.tsx";
 import Hub from "./Hub/Hub.tsx";
 import Post from "./Post/Post.tsx";
+import ProtectedRoute from "../components/ProtectedRoute.tsx";
+import HubErrorBoundary from "../components/HubErrorBoundary.tsx";
 
 const router = createBrowserRouter([
   {
@@ -38,8 +40,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/hub/:name/submit",
-        element: <SubmitPost />,
-        errorElement: <div>Something went wrong</div>,
+        element: (
+          <ProtectedRoute>
+            <SubmitPost />
+          </ProtectedRoute>
+        ),
+        errorElement: <HubErrorBoundary />,
       },
       {
         path: "/hub/:name/:postId/:slug",
@@ -64,9 +70,10 @@ const router = createBrowserRouter([
           return { post, hub };
         },
         element: <Post />,
-        errorElement: <div>Something went wrong</div>,
+        errorElement: <HubErrorBoundary />,
       },
     ],
+    errorElement: <HubErrorBoundary />,
   },
 ]);
 export default router;

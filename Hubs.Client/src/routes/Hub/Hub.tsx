@@ -6,9 +6,11 @@ import HubInfo from "../../components/HubInfo/HubInfo.tsx";
 import styles from "./Hub.module.css";
 import PostItem from "../../components/PostItem/PostItem.tsx";
 import Button from "../../components/ui/Button/Button.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 const Hub = () => {
   const hub = useLoaderData() as HubDto;
   const { name } = useParams() as HubParams;
+  const auth = useAuth();
   const navigate = useNavigate();
   const query = useQuery({
     queryKey: ["hubPosts"],
@@ -25,10 +27,12 @@ const Hub = () => {
     <div>
       <div className={styles["hub-header"]}>
         <h1>{hub.name}</h1>
-        <div className={styles["hub-buttons"]}>
-          <Button onClick={() => navigate("submit")}>Create a post</Button>
-          <Button>Join</Button>
-        </div>
+        {auth.user !== null && (
+          <div className={styles["hub-buttons"]}>
+            <Button onClick={() => navigate("submit")}>Create a post</Button>
+            <Button>Join</Button>
+          </div>
+        )}
       </div>
       <div className={styles.wrapper}>
         <div className={styles.content}>
