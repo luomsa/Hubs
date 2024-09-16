@@ -1,0 +1,28 @@
+﻿@value index: "../../index.css";
+
+@value base from index;
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    order: 1;
+    & > p {
+        border: 1px solid blue;
+        height: 250px;
+    }
+}
+@media screen and (min-width: base) {
+    .wrapper {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .content {
+        order: 0;
+    }
+}
+

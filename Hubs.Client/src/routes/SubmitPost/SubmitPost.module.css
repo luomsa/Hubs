@@ -1,0 +1,36 @@
+﻿
+.title {
+    display: flex;
+    flex-direction: column;
+   
+}
+.type {
+    margin-block-start: 1rem;
+    padding: 0;
+    border: none;
+    display: flex;
+    gap: 0.5rem;
+    & > div {
+        display: flex;
+        gap: 0.25rem;
+    }
+}
+.content {
+    margin-block-start: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    & > label {
+        display: flex;
+        flex-direction: column;
+    }
+    & textarea {
+        height: 200px;
+    }
+}
+
+
+.form {
+    max-width: 600px;
+    margin-inline-start: 0.5rem;
+}
