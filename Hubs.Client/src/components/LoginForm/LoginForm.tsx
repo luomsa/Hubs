@@ -4,6 +4,7 @@ import client, { ApiError } from "../../api/http.ts";
 import styles from "./LoginForm.module.css";
 import Button from "../ui/Button/Button.tsx";
 import Input from "../ui/Input/Input.tsx";
+import { useNavigate, useRevalidator, useSearchParams } from "react-router-dom";
 
 type Inputs = {
   username: string;
@@ -11,11 +12,14 @@ type Inputs = {
 };
 
 interface LoginFormProps {
-  closeDialog: () => void;
+  closeDialog?: () => void;
 }
 
 const LoginForm = ({ closeDialog }: LoginFormProps) => {
   const user = useAuth();
+  const [searchParams] = useSearchParams();
+  const revalidator = useRevalidator();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -35,8 +39,18 @@ const LoginForm = ({ closeDialog }: LoginFormProps) => {
       if (userData === undefined) {
         throw new Error("No data");
       }
-      user.setUser({ username: userData.username, userId: userData.userId });
-      closeDialog();
+      user.setUser({
+        username: userData.username,
+        userId: userData.userId,
+        joinedHubs: userData.joinedHubs,
+      });
+      if (searchParams.has("destination")) {
+        const destination = searchParams.get("destination") as string;
+        navigate(destination);
+      } else {
+        revalidator.revalidate();
+        closeDialog?.();
+      }
     } catch (error) {
       if (error instanceof ApiError) {
         console.log("error!!", error);
@@ -48,7 +62,7 @@ const LoginForm = ({ closeDialog }: LoginFormProps) => {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className={styles["login-form"]} onSubmit={handleSubmit(onSubmit)}>
       <h1>Login</h1>
       <div>
         {Object.values(errors.root ?? {}).map((value, i) => (
@@ -57,8 +71,9 @@ const LoginForm = ({ closeDialog }: LoginFormProps) => {
           </div>
         ))}
         <div>
-          <label>Username</label>
+          <label htmlFor={"username"}>Username</label>
           <Input
+            id={"username"}
             type={"text"}
             autoComplete={"username"}
             autoCapitalize="none"
@@ -79,8 +94,9 @@ const LoginForm = ({ closeDialog }: LoginFormProps) => {
         </div>
 
         <div>
-          <label>Password</label>
+          <label htmlFor={"password"}>Password</label>
           <Input
+            id={"password"}
             type={"password"}
             autoComplete={"current-password"}
             {...register("password", {
