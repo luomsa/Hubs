@@ -11,12 +11,12 @@ public record PostDto
     [Required] public string Content { get; set; } = null!;
     [Required] public string Slug { get; set; } = null!;
     [Required] public UserDto Author { get; set; } = null!;
-    [Required] public int TotalLikes { get; set; }
     [Required] public int PostId { get; set; }
     [Required] public DateTime CreatedAt { get; set; }
+    [Required] public int VoteCount { get; set; }
+    [Required] public VoteType? UserVoteType { get; set; }
 
     [Required] public string Hub { get; set; } = null!;
     [Required] public string Url => $"/hub/{Hub}/{PostId}/{Slug}";
     [Required] public PostType Type { get; set; }
-
 }

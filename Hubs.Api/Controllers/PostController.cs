@@ -37,16 +37,15 @@ public class PostController : ControllerBase
         var dto = await _postService.CreatePostAsync(request, user);
         return TypedResults.Ok(dto);
     }
+
     [Route("{postId}")]
     [HttpGet]
     [ProducesResponseType<PostDto>(StatusCodes.Status200OK)]
-    public async Task<IResult> GetPost(string postId)
+    public async Task<IResult> GetPost(int postId)
     {
-        var parsedId = int.TryParse(postId, out var id);
-        if (parsedId is false) return TypedResults.BadRequest();
         var user = await _userManager.GetUserAsync(HttpContext.User);
         //if (user is null) return TypedResults.Unauthorized();
-        var dto = await _postService.GetHubPostAsync(id);
+        var dto = await _postService.GetHubPostAsync(postId, user);
         if (dto is null) return TypedResults.BadRequest();
         return TypedResults.Ok(dto);
     }
@@ -61,6 +60,7 @@ public class PostController : ControllerBase
         var comment = await _commentService.GetPostCommentsAsync(id);
         return TypedResults.Ok(comment);
     }
+
     [Route("{postId}/comments")]
     [HttpPost]
     [ProducesResponseType<CommentDto>(StatusCodes.Status200OK)]
@@ -72,5 +72,17 @@ public class PostController : ControllerBase
         if (user is null) return TypedResults.Unauthorized();
         var comment = await _commentService.CreateCommentAsync(id, request, user);
         return TypedResults.Ok(comment);
+    }
+
+    [Route("{postId}/vote")]
+    [HttpPost]
+    public async Task<IResult> VotePost(string postId, [FromQuery(Name = "type")] VoteType voteType)
+    {
+        var parsed = int.TryParse(postId, out int id);
+        if (parsed is false) return TypedResults.BadRequest();
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        if (user is null) return TypedResults.Unauthorized();
+        await _postService.VotePost(id, voteType, user);
+        return TypedResults.Ok();
     }
 }
