@@ -2,15 +2,88 @@ import styles from "./NavMenu.module.css";
 import AuthModal from "../AuthModal/AuthModal.tsx";
 import Input from "../ui/Input/Input.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
-const NavMenu = () => {
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import useDebounce from "../../utils/useDebounce.tsx";
+import client from "../../api/http.ts";
+import { HubSearchDto } from "../../types.ts";
+import { Link } from "react-router-dom";
+import { IconMenu2 } from "@tabler/icons-react";
+type Props = {
+  toggleMenu: () => void;
+};
+const NavMenu = ({ toggleMenu }: Props) => {
   const auth = useAuth();
+  const [search, setSearch] = useState("");
+
+  const [debounceVal, setDebounceVal] = useState<HubSearchDto[]>([]);
+
+  const debounceValue = useDebounce(search, 800);
+  const searchResultsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (search == "") return;
+    console.log("Debounced:", search);
+    client
+      .GET("/api/hubs/search", { params: { query: { q: search } } })
+      .then((r) => r.data !== undefined && setDebounceVal(r.data));
+    if (searchResultsRef.current !== null)
+      searchResultsRef.current.hidden = false;
+  }, [debounceValue]);
+  // console.log(result);
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
+    setSearch(e.target.value);
+
+  useEffect(() => {
+    document.body.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement;
+      if (
+        searchResultsRef.current !== null &&
+        target.parentElement !== searchResultsRef.current
+      ) {
+        console.log(event.target);
+        console.log(searchResultsRef.current);
+        searchResultsRef.current.hidden = true;
+      }
+    });
+  }, []);
   return (
     <div className={styles.header}>
-      <div>
+      <div className={styles.logo}>
         <h2>Hubs</h2>
       </div>
-      <div>
-        <Input type={"text"} placeholder={"Search"} />
+      <div className={styles["mobile-button"]}>
+        <button onClick={toggleMenu}>
+          <IconMenu2 stroke={2} />
+        </button>
+      </div>
+      <div className={styles.search}>
+        <Input
+          autoCapitalize={"off"}
+          type={"text"}
+          placeholder={"Search"}
+          onChange={handleSearch}
+        />
+
+        <div
+          ref={searchResultsRef}
+          className={styles.result}
+          hidden={debounceVal.length <= 0}
+        >
+          {debounceVal.map((h) => (
+            <div key={h.hubId} className={styles.item}>
+              <Link
+                to={`/hub/${h.name}`}
+                onClick={() => {
+                  if (searchResultsRef.current !== null)
+                    searchResultsRef.current.hidden = true;
+                }}
+              >
+                <p>{h.name}</p>
+                <p>{h.totalMembers} members</p>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
       <div>{auth.user === null ? <AuthModal /> : <p>logged in</p>}</div>
     </div>
