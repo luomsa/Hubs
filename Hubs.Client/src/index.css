@@ -3,6 +3,7 @@
     --header-height: 60px;
     --button-width: auto;
     --button-height: fit-content;
+    --mobile-menu-active: none;
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 16px;
 }
@@ -61,4 +62,7 @@ p, h1, h2, h3, h4, h5, h6 {
 #root {
     isolation: isolate;
     height: 100%;
+}
+a.active {
+    background-color: #f0f0f0;
 }
