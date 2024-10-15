@@ -34,12 +34,11 @@ const SubmitPost = () => {
     <div>
       <form
         className={styles.form}
-        style={{ width: "100%" }}
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1>hub/{hub.name}</h1>
         <div className={styles.title}>
-          <label htmlFor={"title"}>Title</label>
+          <label htmlFor={"title"}><span>Title</span></label>
           <Input
             id={"title"}
             type="text"
@@ -68,7 +67,7 @@ const SubmitPost = () => {
               value="Text"
               {...register("type")}
             />
-            <label htmlFor={"text"}>Text</label>
+            <label htmlFor={"text"}><span>Text</span></label>
           </div>
           <div>
             <Input
@@ -77,12 +76,12 @@ const SubmitPost = () => {
               value="Image"
               {...register("type")}
             />
-            <label htmlFor={"image"}>Image</label>
+            <label htmlFor={"image"}><span>Image</span></label>
           </div>
         </fieldset>
         <div className={styles.content}>
           <label>
-            Body
+            <span>Body</span>
             {watch("type") === "Text" ? (
               <Textarea
                 {...register("content", {

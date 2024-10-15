@@ -34,12 +34,18 @@ const RegisterForm = () => {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className={styles["register-form"]} onSubmit={handleSubmit(onSubmit)}>
       <h1>Register</h1>
       <div>
+        {Object.values(errors.root ?? {}).map((value, i) => (
+          <div className={styles.error} key={i}>
+            {typeof value === "object" && value.message}
+          </div>
+        ))}
         <div>
-          <label>Username</label>
+          <label htmlFor={"username"}>Username</label>
           <Input
+            id={"username"}
             type={"text"}
             autoComplete={"username"}
             autoCapitalize="none"
@@ -59,8 +65,9 @@ const RegisterForm = () => {
         </div>
 
         <div>
-          <label>Password</label>
+          <label htmlFor={"password"}>Password</label>
           <Input
+            id={"password"}
             type={"password"}
             autoComplete={"new-password"}
             {...register("password", {
@@ -79,8 +86,9 @@ const RegisterForm = () => {
         </div>
 
         <div>
-          <label>Confirm password</label>
+          <label htmlFor={"confirmPassword"}>Confirm password</label>
           <Input
+            id={"confirmPassword"}
             type={"password"}
             autoComplete={"new-password"}
             {...register("confirmPassword", {
