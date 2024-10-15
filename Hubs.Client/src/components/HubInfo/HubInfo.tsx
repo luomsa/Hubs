@@ -1,10 +1,15 @@
 ﻿import { HubDto } from "../../types.ts";
 import styles from "./HubInfo.module.css";
-const HubInfo = ({ name, description, totalMembers }: HubDto) => {
+import { Link, useParams } from "react-router-dom";
+const HubInfo = ({ name, description, totalMembers, createdAt }: HubDto) => {
+  const hub = useParams();
   return (
     <div className={styles.container}>
-      <p className={styles.title}>{name}</p>
+      <h2 className={styles.title}>
+        <Link to={`/hub/${hub.name}`}>{name}</Link>
+      </h2>
       <p>{description}</p>
+      <p>Created: {new Date(createdAt).toDateString()}</p>
       <p>Members: {totalMembers}</p>
     </div>
   );

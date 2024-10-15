@@ -4,11 +4,13 @@
     min-height: 200px;
     max-height: 600px;
     margin-block: 1rem;
+    display: flex;
+    flex-direction: column;
+    white-space: pre-line;
 
     & > img {
-        max-width: 100%;
-        max-height: 100%;
         object-fit: contain;
+        height: 100%;
     }
 
 }

@@ -1,11 +1,10 @@
-﻿.post-content {
+﻿.post {
     padding: 0.5rem;
     position: relative;
-    min-height: 200px;
-    max-height: 600px;
     margin-block: 1rem;
     display: flex;
     flex-direction: column;
+    white-space: pre-line;
 
     &:hover {
         background-color: #f4f4f4;
@@ -17,13 +16,20 @@
     height: 100%;
 }
 
-.post {
+.wrapper {
     border-block-start: 1px solid #ccc;
 }
 
 .details {
     display: flex;
     gap: 0.5rem;
+}
+.content {
+    min-height: 200px;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    white-space: pre-line;
 }
 
 .title {
@@ -38,7 +44,6 @@
     text-decoration: none;
     color: black;
     &:before {
-
         content: '';
         position: absolute;
         top: 0;
@@ -48,4 +53,5 @@
         z-index: 1;
     }
 }
+
 

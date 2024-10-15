@@ -18,7 +18,7 @@ const PostDetail = (props: PostDto) => {
             {dayjs(props.createdAt).fromNow()}
           </time>
         </div>
-        <p className={styles.title}>{props.title}</p>
+        <h2 className={styles.title}>{props.title}</h2>
         {props.type === "Image" ? (
           <img alt={"image"} src={props.content} />
         ) : (

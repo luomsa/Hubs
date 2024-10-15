@@ -1,14 +1,23 @@
-﻿import { PostDto } from "../../types.ts";
+﻿import { PostDto, SortBy, TopSortBy } from "../../types.ts";
 import styles from "./PostItem.module.css";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-const PostItem = (props: PostDto) => {
+
+import { ReactNode } from "react";
+type Props = PostDto & {
+  hubName: string;
+  page: number;
+  sortBy: SortBy;
+  timeSort: TopSortBy;
+  children: ReactNode;
+};
+const PostItem = (props: Props) => {
   dayjs.extend(relativeTime);
 
   return (
-    <div className={styles.post}>
-      <div className={styles["post-content"]}>
+    <div className={styles.wrapper}>
+      <div className={styles.post}>
         <div className={styles.details}>
           <p>{props.author.username}</p> |
           <time
@@ -19,16 +28,28 @@ const PostItem = (props: PostDto) => {
             {dayjs(props.createdAt).fromNow()}
           </time>
         </div>
-        <p className={styles.title}>
+        <div className={styles.title}>
           <Link className={styles.url} to={props.url}>
             {props.title}
           </Link>
-        </p>
-        {props.type === "Image" ? (
-          <img className={styles.img} alt={"image"} src={props.content} />
-        ) : (
-          <p>{props.content}</p>
-        )}
+        </div>
+        <div className={styles.content}>
+          {props.type === "Image" ? (
+            <img
+              loading={"lazy"}
+              className={styles.img}
+              alt={"image"}
+              src={props.content}
+            />
+          ) : (
+            <p>
+              {props.content.length > 500
+                ? props.content.substring(0, 500) + "..."
+                : props.content}
+            </p>
+          )}
+        </div>
+        {props.children}
       </div>
     </div>
   );

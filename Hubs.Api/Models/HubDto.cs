@@ -10,4 +10,9 @@ public record HubDto()
     [Required] public string Description { get; set; } = null!;
 
     [Required] public int TotalMembers { get; set; }
+    
+    [Required] public bool IsJoined { get; set; }
+    
+    [Required] public DateTime CreatedAt { get; set; }
+    
 }
