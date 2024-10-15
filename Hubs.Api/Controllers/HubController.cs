@@ -38,17 +38,53 @@ public class HubController : ControllerBase
     [ProducesResponseType<HubDto>(StatusCodes.Status200OK)]
     public async Task<IResult> GetHubByName(string name)
     {
-        var result = await _hubService.GetByNameAsync(name);
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        var result = await _hubService.GetByNameAsync(name, user);
         return result is null ? TypedResults.NotFound() : TypedResults.Ok(result);
+    }
+
+    [Route("search")]
+    [HttpGet]
+    [ProducesResponseType<List<HubSearchDto>>(StatusCodes.Status200OK)]
+    public async Task<IResult> SearchHubs(string q)
+    {
+        var result = await _hubService.SearchByName(q);
+        return TypedResults.Ok(result);
     }
 
     [Route("{name}/posts")]
     [HttpGet]
     [ProducesResponseType<List<PostDto>>(StatusCodes.Status200OK)]
-    public async Task<IResult> GetHubPosts(string name)
+    public async Task<IResult> GetHubPosts(string name, [FromQuery(Name = "time")] TimeSortOrder time = TimeSortOrder.Day, [FromQuery(Name = "page")] int page = 0,
+    [FromQuery(Name = "sort")] SortOrder sort = SortOrder.New)
     {
-        var posts = await _postService.GetHubPostsAsync(name);
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        var posts = await _postService.GetHubPostsAsync(name, sort, time, page, user);
         return TypedResults.Ok(posts);
     }
-    
+
+    [Authorize]
+    [Route("{name}/join")]
+    [HttpPost]
+    [ProducesResponseType<SidebarHubDto>(StatusCodes.Status200OK)]
+    public async Task<IResult> JoinHub(string name)
+    {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        if (user is null) return TypedResults.Unauthorized();
+        var result = await _hubService.JoinHubAsync(name, user);
+        if (result is null) return TypedResults.Conflict();
+        return TypedResults.Ok(result);
+    }
+
+    [Authorize]
+    [Route("{name}/leave")]
+    [HttpPost]
+    public async Task<IResult> LeaveHub(string name)
+    {
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        if (user is null) return TypedResults.Unauthorized();
+        var result = await _hubService.LeaveHubAsync(name, user);
+        if (result) return TypedResults.Ok();
+        return TypedResults.Conflict();
+    }
 }

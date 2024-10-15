@@ -47,8 +47,62 @@ public class HubService : IHubService
         }
     }
 
-    public async Task<HubDto?> GetByNameAsync(string name)
+    public async Task<HubDto?> GetByNameAsync(string name, User? user)
     {
-        return await _context.Hubs.Where(hub => hub.Name.ToLower().Equals(name.ToLower())).Select(hub => new HubDto() {Name =hub.Name, Description = hub.Description, TotalMembers = hub.HubMembers.Count}).FirstOrDefaultAsync();
+        if (user is null)
+        {
+            return await _context.Hubs.Where(hub => hub.Name.ToLower().Equals(name.ToLower())).Select(hub =>
+                new HubDto()
+                {
+                    Name = hub.Name, Description = hub.Description, TotalMembers = hub.HubMembers.Count,
+                    IsJoined = false,
+                    CreatedAt = hub.CreatedAt,
+                }).FirstOrDefaultAsync();
+        }
+
+        return await _context.Hubs.Where(hub => hub.Name.ToLower().Equals(name.ToLower())).Select(hub => new HubDto()
+        {
+            Name = hub.Name, Description = hub.Description, TotalMembers = hub.HubMembers.Count,
+            IsJoined = hub.HubMembers.FirstOrDefault(hm => hm.UserId == user.Id) != null,
+            CreatedAt = hub.CreatedAt,
+        }).FirstOrDefaultAsync();
+    }
+
+    public async Task<SidebarHubDto?> JoinHubAsync(string name, User user)
+    {
+        var userHub =
+            _context.HubMembers.FirstOrDefault(hm =>
+                hm.UserId == user.Id && hm.Hub.Name.ToLower().Equals(name.ToLower()));
+        if (userHub is not null) return null;
+        var hub = _context.Hubs.FirstOrDefault(h => h.Name.ToLower().Equals(name.ToLower()));
+        if (hub is null) throw new HubNotFoundException("Hub with that name doesn't exist");
+        var hubMember = new HubMember()
+        {
+            User = user,
+            UserId = user.Id,
+            Hub = hub,
+            HubId = hub.HubId
+        };
+        await _context.HubMembers.AddAsync(hubMember);
+        await _context.SaveChangesAsync();
+        return new SidebarHubDto() { Name = hub.Name, HubId = hub.HubId };
+    }
+
+    public async Task<bool> LeaveHubAsync(string name, User user)
+    {
+        var userHub =
+            _context.HubMembers.FirstOrDefault(hm =>
+                hm.UserId == user.Id && hm.Hub.Name.ToLower().Equals(name.ToLower()));
+        if (userHub is null) return await Task.FromResult(false);
+        _context.HubMembers.Remove(userHub);
+        await _context.SaveChangesAsync();
+        return await Task.FromResult(true);
+    }
+
+    public Task<List<HubSearchDto>> SearchByName(string name)
+    {
+        var hubs = _context.Hubs.Where(h => h.Name.ToLower().Contains(name.ToLower()))
+            .Select(h => new HubSearchDto() { HubId = h.HubId, Name = h.Name, TotalMembers = h.HubMembers.Count() }).Take(10).ToListAsync();
+        return hubs;
     }
 }
