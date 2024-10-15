@@ -193,6 +193,45 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/hubs/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: {
+                    q?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["HubSearchDto"][];
+                        "application/json": components["schemas"]["HubSearchDto"][];
+                        "text/json": components["schemas"]["HubSearchDto"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/hubs/{name}/posts": {
         parameters: {
             query?: never;
@@ -202,7 +241,11 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    time?: components["schemas"]["TimeSortOrder"];
+                    page?: number;
+                    sort?: components["schemas"]["SortOrder"];
+                };
                 header?: never;
                 path: {
                     name: string;
@@ -226,6 +269,80 @@ export interface paths {
         };
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hubs/{name}/join": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    name: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["SidebarHubDto"];
+                        "application/json": components["schemas"]["SidebarHubDto"];
+                        "text/json": components["schemas"]["SidebarHubDto"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/hubs/{name}/leave": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    name: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -287,7 +404,7 @@ export interface paths {
                 query?: never;
                 header?: never;
                 path: {
-                    postId: string;
+                    postId: number;
                 };
                 cookie?: never;
             };
@@ -373,6 +490,43 @@ export interface paths {
                         "application/json": components["schemas"]["CommentDto"];
                         "text/json": components["schemas"]["CommentDto"];
                     };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/posts/{postId}/vote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: {
+                    type?: components["schemas"]["VoteType"];
+                };
+                header?: never;
+                path: {
+                    postId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Success */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
                 };
             };
         };
@@ -475,6 +629,16 @@ export interface components {
             description: string;
             /** Format: int32 */
             totalMembers: number;
+            isJoined: boolean;
+            /** Format: date-time */
+            createdAt: string;
+        };
+        HubSearchDto: {
+            /** Format: int32 */
+            hubId: number;
+            name: string;
+            /** Format: int32 */
+            totalMembers: number;
         };
         NewCommentRequest: {
             content: string;
@@ -495,21 +659,34 @@ export interface components {
             slug: string;
             author: components["schemas"]["UserDto"];
             /** Format: int32 */
-            totalLikes: number;
-            /** Format: int32 */
             postId: number;
             /** Format: date-time */
             createdAt: string;
+            /** Format: int32 */
+            voteCount: number;
+            userVoteType: components["schemas"]["VoteType"];
             hub: string;
             readonly url: string;
             type: components["schemas"]["PostType"];
         };
         /** @enum {string} */
         PostType: "Text" | "Image";
+        SidebarHubDto: {
+            /** Format: int32 */
+            hubId: number;
+            name: string;
+        };
+        /** @enum {string} */
+        SortOrder: "New" | "Top";
+        /** @enum {string} */
+        TimeSortOrder: "Hour" | "Day" | "Week" | "Month" | "Year" | "AllTime";
         UserDto: {
             username: string;
             userId: string;
+            joinedHubs: components["schemas"]["SidebarHubDto"][];
         };
+        /** @enum {string} */
+        VoteType: "Like" | "Dislike";
     };
     responses: never;
     parameters: never;
