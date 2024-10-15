@@ -32,5 +32,20 @@
 
 .form {
     max-width: 600px;
-    margin-inline-start: 0.5rem;
+    margin-inline: 0.5rem;
+   & h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+   & span {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+    & textarea {
+        margin-bottom: 20px;
+    }
+
 }
