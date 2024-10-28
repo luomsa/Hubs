@@ -1,29 +1,28 @@
 ﻿.post-content {
-    padding: 0.5rem;
-    position: relative;
-    min-height: 200px;
-    max-height: 600px;
-    margin-block: 1rem;
-    display: flex;
-    flex-direction: column;
-    white-space: pre-line;
+  padding: 0.5rem;
+  position: relative;
+  min-height: 200px;
+  max-height: 600px;
+  margin-block: 1rem;
+  display: flex;
+  flex-direction: column;
+  white-space: pre-line;
 
-    & > img {
-        object-fit: contain;
-        height: 100%;
-    }
-
+  & > img {
+    object-fit: contain;
+    height: 100%;
+  }
 }
 
 .post {
 }
 
 .details {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .title {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }

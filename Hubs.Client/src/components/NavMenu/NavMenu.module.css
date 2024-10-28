@@ -3,69 +3,68 @@
 @value base from index;
 
 .header {
-    height: var(--header-height);
-    border-block-end: 1px solid #ccc;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    background-color: white;
-    z-index: 999;
-    margin-inline: 0.5rem;
+  height: var(--header-height);
+  border-block-end: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 999;
+  margin-inline: 0.5rem;
 }
 
 .search {
-    position: relative;
-    width: 500px;
+  position: relative;
+  width: 500px;
 }
-
 
 .result {
-    position: absolute;
-    width: 100%;
-    border: 1px solid #ccc;
-    padding: 0.25rem;
-    border-radius: 6px;
-    left: 0;
-    background: white;
-    z-index: 1;
+  position: absolute;
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 0.25rem;
+  border-radius: 6px;
+  left: 0;
+  background: white;
+  z-index: 1;
 }
 .item {
-    
-    &:not(:last-child) {border-bottom: 1px solid #ccc;}
-    &:hover {
-        background-color: #f0f0f0;
-    }
-    & > a {
-        text-decoration: none;
-        color: black;
-       
-    }
+  &:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+  }
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  & > a {
+    text-decoration: none;
+    color: black;
+  }
 }
 
 .logo {
-    display: none;
+  display: none;
 }
 .mobile-button {
-    display: block;
+  display: block;
+  cursor: pointer;
+
+  & > button {
+    background: none;
+    border: none;
     cursor: pointer;
-   
-    & > button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: black;
-    }
-    & svg {
-        min-width: 24px;
-    }
+    color: black;
+  }
+  & svg {
+    min-width: 24px;
+  }
 }
 @media screen and (min-width: base) {
-    .logo {
-        display: block;
-    }
-    .mobile-button {
-        display: none;
-    }
+  .logo {
+    display: block;
+  }
+  .mobile-button {
+    display: none;
+  }
 }

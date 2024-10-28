@@ -9,7 +9,6 @@ import Textarea from "../../components/ui/Textarea/Textarea.tsx";
 const SubmitPost = () => {
   const hub = useParams();
   const navigate = useNavigate();
-  console.log(hub);
   const {
     register,
     handleSubmit,
@@ -32,13 +31,12 @@ const SubmitPost = () => {
   };
   return (
     <div>
-      <form
-        className={styles.form}
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <h1>hub/{hub.name}</h1>
         <div className={styles.title}>
-          <label htmlFor={"title"}><span>Title</span></label>
+          <label htmlFor={"title"}>
+            <span>Title</span>
+          </label>
           <Input
             id={"title"}
             type="text"
@@ -67,7 +65,9 @@ const SubmitPost = () => {
               value="Text"
               {...register("type")}
             />
-            <label htmlFor={"text"}><span>Text</span></label>
+            <label htmlFor={"text"}>
+              <span>Text</span>
+            </label>
           </div>
           <div>
             <Input
@@ -76,7 +76,9 @@ const SubmitPost = () => {
               value="Image"
               {...register("type")}
             />
-            <label htmlFor={"image"}><span>Image</span></label>
+            <label htmlFor={"image"}>
+              <span>Image</span>
+            </label>
           </div>
         </fieldset>
         <div className={styles.content}>
@@ -108,17 +110,6 @@ const SubmitPost = () => {
                   maxLength: {
                     value: 1000,
                     message: "Body has to be at most 1000 characters long",
-                  },
-                  validate: async (value) => {
-                    try {
-                      const result = await fetch(value, { method: "head" });
-                      const isImage = result.headers
-                        .get("content-type")
-                        ?.includes("image");
-                      return isImage ? true : "Not an image";
-                    } catch (error) {
-                      return "This owner of the website does not allow linking, try another one";
-                    }
                   },
                 })}
               />

@@ -1,21 +1,18 @@
-﻿
-.error {
-    color: red;
-    font-size: 14px;
-    margin-bottom: 10px;
+﻿.error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 .login-form {
-    h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
-        text-align: center;
-    }
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 
-    label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-    }
-
-
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
 }
