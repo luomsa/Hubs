@@ -2,6 +2,7 @@ import NavMenu from "./components/NavMenu/NavMenu.tsx";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 import Sidebar from "./components/Sidebar/Sidebar.tsx";
 import styles from "./App.module.css";
+import { Toaster } from "react-hot-toast";
 function App() {
   const toggleMenu = () => {
     if (
@@ -30,6 +31,7 @@ function App() {
         </main>
       </div>
       <ScrollRestoration />
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }
