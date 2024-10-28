@@ -12,12 +12,12 @@ type Props = Pick<PostDto, "voteCount" | "userVoteType"> & {
   postId: string;
 };
 const PostActions = ({ voteCount, userVoteType, onVote, postId }: Props) => {
-  const auth = useAuth();
+  const { state } = useAuth();
   return (
     <div className={styles.actions}>
       <button
         onClick={() => onVote(postId, "Like")}
-        disabled={userVoteType !== null || auth.user === null}
+        disabled={userVoteType !== null || state.user === null}
       >
         {userVoteType === "Like" ? (
           <IconArrowBigUpFilled />
@@ -28,7 +28,7 @@ const PostActions = ({ voteCount, userVoteType, onVote, postId }: Props) => {
       <span>{voteCount}</span>
       <button
         onClick={() => onVote(postId, "Dislike")}
-        disabled={userVoteType !== null || auth.user === null}
+        disabled={userVoteType !== null || state.user === null}
       >
         {userVoteType === "Dislike" ? (
           <IconArrowBigDownFilled />

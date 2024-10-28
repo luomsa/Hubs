@@ -12,7 +12,7 @@ type Props = {
   toggleMenu: () => void;
 };
 const NavMenu = ({ toggleMenu }: Props) => {
-  const auth = useAuth();
+  const { state } = useAuth();
   const [search, setSearch] = useState("");
 
   const [debounceVal, setDebounceVal] = useState<HubSearchDto[]>([]);
@@ -21,14 +21,12 @@ const NavMenu = ({ toggleMenu }: Props) => {
   const searchResultsRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (search == "") return;
-    console.log("Debounced:", search);
     client
       .GET("/api/hubs/search", { params: { query: { q: search } } })
       .then((r) => r.data !== undefined && setDebounceVal(r.data));
     if (searchResultsRef.current !== null)
       searchResultsRef.current.hidden = false;
   }, [debounceValue]);
-  // console.log(result);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
     setSearch(e.target.value);
@@ -40,8 +38,6 @@ const NavMenu = ({ toggleMenu }: Props) => {
         searchResultsRef.current !== null &&
         target.parentElement !== searchResultsRef.current
       ) {
-        console.log(event.target);
-        console.log(searchResultsRef.current);
         searchResultsRef.current.hidden = true;
       }
     });
@@ -85,7 +81,7 @@ const NavMenu = ({ toggleMenu }: Props) => {
           ))}
         </div>
       </div>
-      <div>{auth.user === null ? <AuthModal /> : <p>logged in</p>}</div>
+      <div>{state.user === null ? <AuthModal /> : <p>logged in</p>}</div>
     </div>
   );
 };

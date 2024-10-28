@@ -16,10 +16,10 @@ interface LoginFormProps {
 }
 
 const LoginForm = ({ closeDialog }: LoginFormProps) => {
-  const user = useAuth();
   const [searchParams] = useSearchParams();
   const revalidator = useRevalidator();
   const navigate = useNavigate();
+  const { dispatch } = useAuth();
   const {
     register,
     handleSubmit,
@@ -30,7 +30,6 @@ const LoginForm = ({ closeDialog }: LoginFormProps) => {
     mode: "onBlur",
   });
   const onSubmit: SubmitHandler<Inputs> = async (input) => {
-    console.log(input);
     try {
       await client.POST("/api/auth/login", {
         body: input,
@@ -39,10 +38,13 @@ const LoginForm = ({ closeDialog }: LoginFormProps) => {
       if (userData === undefined) {
         throw new Error("No data");
       }
-      user.setUser({
-        username: userData.username,
-        userId: userData.userId,
-        joinedHubs: userData.joinedHubs,
+      dispatch({
+        type: "set_user",
+        payload: {
+          username: userData.username,
+          userId: userData.userId,
+          joinedHubs: userData.joinedHubs,
+        },
       });
       if (searchParams.has("destination")) {
         const destination = searchParams.get("destination") as string;
@@ -53,7 +55,6 @@ const LoginForm = ({ closeDialog }: LoginFormProps) => {
       }
     } catch (error) {
       if (error instanceof ApiError) {
-        console.log("error!!", error);
         setError(`root.${error.message}`, {
           type: "manual",
           message: error.message,

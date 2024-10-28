@@ -2,9 +2,8 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.tsx";
 import NewHubModal from "../NewHubModal/NewHubModal.tsx";
-import { forwardRef } from "react";
 const Sidebar = () => {
-  const auth = useAuth();
+  const { state } = useAuth();
   const hideMobileMenu = () => {
     document.documentElement.style.setProperty("--mobile-menu-active", "none");
   };
@@ -28,10 +27,10 @@ const Sidebar = () => {
       </ul>
       <ul>
         <div className={styles.link}>
-          {auth.user !== null && <NewHubModal />}
+          {state.user !== null && <NewHubModal />}
         </div>
-        {auth.user !== null &&
-          auth.user?.joinedHubs.map((hub) => (
+        {state.user !== null &&
+          state.user?.joinedHubs.map((hub) => (
             <li key={hub.hubId}>
               <NavLink
                 className={styles.link}

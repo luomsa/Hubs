@@ -7,15 +7,15 @@ type ProtectedRouteProps = {
 };
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const auth = useAuth();
+  const { state } = useAuth();
 
   const destination = new URLSearchParams({
     destination: window.location.pathname,
   });
-  if (auth.user === undefined) {
+  if (state.user === undefined) {
     return <div>Loading...</div>;
   }
-  if (auth.user !== null) {
+  if (state.user !== null) {
     return children;
   }
   return <Navigate to={`/authenticate?${destination.toString()}`} />;
