@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App.tsx";
-import Home from "./Home.tsx";
-import Popular from "./Popular.tsx";
+import Home from "./Home/Home.tsx";
+import Popular from "./Popular/Popular.tsx";
 import SubmitPost from "./SubmitPost/SubmitPost.tsx";
 import Hub from "./Hub/Hub.tsx";
 import Post from "./Post/Post.tsx";

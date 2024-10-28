@@ -6,7 +6,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 import { ReactNode } from "react";
 type Props = PostDto & {
-  hubName: string;
+  hubName?: string;
   page: number;
   sortBy: SortBy;
   timeSort: TopSortBy;
@@ -19,6 +19,11 @@ const PostItem = (props: Props) => {
     <div className={styles.wrapper}>
       <div className={styles.post}>
         <div className={styles.details}>
+          {props.hubName && (
+            <>
+              <p>hub/{props.hubName}</p> |
+            </>
+          )}
           <p>{props.author.username}</p> |
           <time
             className={styles.time}

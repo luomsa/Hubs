@@ -4,695 +4,779 @@
  */
 
 export interface paths {
-    "/api/auth/register": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["AuthRequest"];
-                    "text/json": components["schemas"]["AuthRequest"];
-                    "application/*+json": components["schemas"]["AuthRequest"];
-                };
-            };
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  "/api/auth/register": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          "application/json": components["schemas"]["AuthRequest"];
+          "text/json": components["schemas"]["AuthRequest"];
+          "application/*+json": components["schemas"]["AuthRequest"];
         };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["AuthRequest"];
-                    "text/json": components["schemas"]["AuthRequest"];
-                    "application/*+json": components["schemas"]["AuthRequest"];
-                };
-            };
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
     };
-    "/api/auth/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/auth/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/hubs": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          "application/json": components["schemas"]["AuthRequest"];
+          "text/json": components["schemas"]["AuthRequest"];
+          "application/*+json": components["schemas"]["AuthRequest"];
         };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["NewHubRequest"];
-                    "text/json": components["schemas"]["NewHubRequest"];
-                    "application/*+json": components["schemas"]["NewHubRequest"];
-                };
-            };
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
     };
-    "/api/hubs/{name}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    name: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["HubDto"];
-                        "application/json": components["schemas"]["HubDto"];
-                        "text/json": components["schemas"]["HubDto"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/auth/logout": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/hubs/search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
-        get: {
-            parameters: {
-                query?: {
-                    q?: string;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["HubSearchDto"][];
-                        "application/json": components["schemas"]["HubSearchDto"][];
-                        "text/json": components["schemas"]["HubSearchDto"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
     };
-    "/api/hubs/{name}/posts": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: {
-                    time?: components["schemas"]["TimeSortOrder"];
-                    page?: number;
-                    sort?: components["schemas"]["SortOrder"];
-                };
-                header?: never;
-                path: {
-                    name: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["PostDto"][];
-                        "application/json": components["schemas"]["PostDto"][];
-                        "text/json": components["schemas"]["PostDto"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/feed/home": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/hubs/{name}/join": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get: {
+      parameters: {
+        query?: {
+          time?: components["schemas"]["TimeSortOrder"];
+          page?: number;
+          sort?: components["schemas"]["SortOrder"];
         };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    name: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["SidebarHubDto"];
-                        "application/json": components["schemas"]["SidebarHubDto"];
-                        "text/json": components["schemas"]["SidebarHubDto"];
-                    };
-                };
-            };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["PostDto"][];
+            "application/json": components["schemas"]["PostDto"][];
+            "text/json": components["schemas"]["PostDto"][];
+          };
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
     };
-    "/api/hubs/{name}/leave": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    name: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/feed/popular": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/posts": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get: {
+      parameters: {
+        query?: {
+          time?: components["schemas"]["TimeSortOrder"];
+          page?: number;
+          sort?: components["schemas"]["SortOrder"];
         };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["NewPostRequest"];
-                    "text/json": components["schemas"]["NewPostRequest"];
-                    "application/*+json": components["schemas"]["NewPostRequest"];
-                };
-            };
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["PostDto"];
-                        "application/json": components["schemas"]["PostDto"];
-                        "text/json": components["schemas"]["PostDto"];
-                    };
-                };
-            };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["PostDto"][];
+            "application/json": components["schemas"]["PostDto"][];
+            "text/json": components["schemas"]["PostDto"][];
+          };
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
     };
-    "/api/posts/{postId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    postId: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["PostDto"];
-                        "application/json": components["schemas"]["PostDto"];
-                        "text/json": components["schemas"]["PostDto"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/hubs": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/posts/{postId}/comments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          "application/json": components["schemas"]["NewHubRequest"];
+          "text/json": components["schemas"]["NewHubRequest"];
+          "application/*+json": components["schemas"]["NewHubRequest"];
         };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    postId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["CommentDto"][];
-                        "application/json": components["schemas"]["CommentDto"][];
-                        "text/json": components["schemas"]["CommentDto"][];
-                    };
-                };
-            };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
         };
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    postId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: {
-                content: {
-                    "application/json": components["schemas"]["NewCommentRequest"];
-                    "text/json": components["schemas"]["NewCommentRequest"];
-                    "application/*+json": components["schemas"]["NewCommentRequest"];
-                };
-            };
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["CommentDto"];
-                        "application/json": components["schemas"]["CommentDto"];
-                        "text/json": components["schemas"]["CommentDto"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
     };
-    "/api/posts/{postId}/vote": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: {
-                    type?: components["schemas"]["VoteType"];
-                };
-                header?: never;
-                path: {
-                    postId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/hubs/{name}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/users/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          name: string;
         };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "text/plain": components["schemas"]["UserDto"];
-                        "application/json": components["schemas"]["UserDto"];
-                        "text/json": components["schemas"]["UserDto"];
-                    };
-                };
-            };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["HubDto"];
+            "application/json": components["schemas"]["HubDto"];
+            "text/json": components["schemas"]["HubDto"];
+          };
         };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+      };
     };
-    "/api/users/feed": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Success */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/hubs/search": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    get: {
+      parameters: {
+        query?: {
+          q?: string;
+        };
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["HubSearchDto"][];
+            "application/json": components["schemas"]["HubSearchDto"][];
+            "text/json": components["schemas"]["HubSearchDto"][];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/hubs/{name}/posts": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          time?: components["schemas"]["TimeSortOrder"];
+          page?: number;
+          sort?: components["schemas"]["SortOrder"];
+        };
+        header?: never;
+        path: {
+          name: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["PostDto"][];
+            "application/json": components["schemas"]["PostDto"][];
+            "text/json": components["schemas"]["PostDto"][];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/hubs/{name}/join": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          name: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["SidebarHubDto"];
+            "application/json": components["schemas"]["SidebarHubDto"];
+            "text/json": components["schemas"]["SidebarHubDto"];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/hubs/{name}/leave": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          name: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/posts": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          "application/json": components["schemas"]["NewPostRequest"];
+          "text/json": components["schemas"]["NewPostRequest"];
+          "application/*+json": components["schemas"]["NewPostRequest"];
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["PostDto"];
+            "application/json": components["schemas"]["PostDto"];
+            "text/json": components["schemas"]["PostDto"];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/posts/{postId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          postId: number;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["PostDto"];
+            "application/json": components["schemas"]["PostDto"];
+            "text/json": components["schemas"]["PostDto"];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/posts/{postId}/comments": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: {
+          page?: number;
+        };
+        header?: never;
+        path: {
+          postId: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["CommentDto"][];
+            "application/json": components["schemas"]["CommentDto"][];
+            "text/json": components["schemas"]["CommentDto"][];
+          };
+        };
+      };
+    };
+    put?: never;
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          postId: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          "application/json": components["schemas"]["NewCommentRequest"];
+          "text/json": components["schemas"]["NewCommentRequest"];
+          "application/*+json": components["schemas"]["NewCommentRequest"];
+        };
+      };
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["CommentDto"];
+            "application/json": components["schemas"]["CommentDto"];
+            "text/json": components["schemas"]["CommentDto"];
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/posts/{postId}/vote": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post: {
+      parameters: {
+        query?: {
+          type?: components["schemas"]["VoteType"];
+        };
+        header?: never;
+        path: {
+          postId: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/users/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "text/plain": components["schemas"]["UserDto"];
+            "application/json": components["schemas"]["UserDto"];
+            "text/json": components["schemas"]["UserDto"];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/users/feed": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Success */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        AuthRequest: {
-            username: string;
-            password: string;
-        };
-        CommentDto: {
-            /** Format: int32 */
-            commentId: number;
-            content: string;
-            author: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: int32 */
-            postId: number;
-        };
-        HubDto: {
-            name: string;
-            description: string;
-            /** Format: int32 */
-            totalMembers: number;
-            isJoined: boolean;
-            /** Format: date-time */
-            createdAt: string;
-        };
-        HubSearchDto: {
-            /** Format: int32 */
-            hubId: number;
-            name: string;
-            /** Format: int32 */
-            totalMembers: number;
-        };
-        NewCommentRequest: {
-            content: string;
-        };
-        NewHubRequest: {
-            name: string;
-            description: string;
-        };
-        NewPostRequest: {
-            title: string;
-            content: string;
-            hubName: string;
-            type: components["schemas"]["PostType"];
-        };
-        PostDto: {
-            title: string;
-            content: string;
-            slug: string;
-            author: components["schemas"]["UserDto"];
-            /** Format: int32 */
-            postId: number;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: int32 */
-            voteCount: number;
-            userVoteType: components["schemas"]["VoteType"];
-            hub: string;
-            readonly url: string;
-            type: components["schemas"]["PostType"];
-        };
-        /** @enum {string} */
-        PostType: "Text" | "Image";
-        SidebarHubDto: {
-            /** Format: int32 */
-            hubId: number;
-            name: string;
-        };
-        /** @enum {string} */
-        SortOrder: "New" | "Top";
-        /** @enum {string} */
-        TimeSortOrder: "Hour" | "Day" | "Week" | "Month" | "Year" | "AllTime";
-        UserDto: {
-            username: string;
-            userId: string;
-            joinedHubs: components["schemas"]["SidebarHubDto"][];
-        };
-        /** @enum {string} */
-        VoteType: "Like" | "Dislike";
+  schemas: {
+    AuthRequest: {
+      username: string;
+      password: string;
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    CommentDto: {
+      /** Format: int32 */
+      commentId: number;
+      content: string;
+      author: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: int32 */
+      postId: number;
+    };
+    HubDto: {
+      name: string;
+      description: string;
+      /** Format: int32 */
+      totalMembers: number;
+      isJoined: boolean;
+      /** Format: date-time */
+      createdAt: string;
+    };
+    HubSearchDto: {
+      /** Format: int32 */
+      hubId: number;
+      name: string;
+      /** Format: int32 */
+      totalMembers: number;
+    };
+    NewCommentRequest: {
+      content: string;
+    };
+    NewHubRequest: {
+      name: string;
+      description: string;
+    };
+    NewPostRequest: {
+      title: string;
+      content: string;
+      hubName: string;
+      type: components["schemas"]["PostType"];
+    };
+    PostDto: {
+      title: string;
+      content: string;
+      slug: string;
+      author: components["schemas"]["UserDto"];
+      /** Format: int32 */
+      postId: number;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: int32 */
+      voteCount: number;
+      userVoteType: components["schemas"]["VoteType"];
+      hub: string;
+      readonly url: string;
+      type: components["schemas"]["PostType"];
+    };
+    /** @enum {string} */
+    PostType: "Text" | "Image";
+    SidebarHubDto: {
+      /** Format: int32 */
+      hubId: number;
+      name: string;
+    };
+    /** @enum {string} */
+    SortOrder: "New" | "Top";
+    /** @enum {string} */
+    TimeSortOrder: "Hour" | "Day" | "Week" | "Month" | "Year" | "AllTime";
+    UserDto: {
+      username: string;
+      userId: string;
+      joinedHubs: components["schemas"]["SidebarHubDto"][];
+    };
+    /** @enum {string} */
+    VoteType: "Like" | "Dislike";
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export type operations = Record<string, never>;
