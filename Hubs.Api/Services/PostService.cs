@@ -2,6 +2,7 @@
 using Hubs.Api.Data;
 using Hubs.Api.Exceptions;
 using Hubs.Api.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hubs.Api.Services;
@@ -55,11 +56,12 @@ public partial class PostService : IPostService
         posts = sort switch
         {
             SortOrder.New => posts.OrderByDescending(p => p.CreatedAt),
-            SortOrder.Top => posts.Where(p => p.CreatedAt >= timeFilter).OrderByDescending(p => p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
+            SortOrder.Top => posts.Where(p => p.CreatedAt >= timeFilter).OrderByDescending(p =>
+                p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
                 p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)),
             _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, null)
         };
-       return await posts.Select(p => new PostDto()
+        return await posts.Select(p => new PostDto()
         {
             Author = new UserDto() { UserId = p.Author.Id, Username = p.Author.UserName },
             Title = p.Title,
@@ -69,7 +71,8 @@ public partial class PostService : IPostService
             Type = p.Type,
             Hub = p.Hub.Name,
             CreatedAt = p.CreatedAt,
-            UserVoteType = p.PostVotes.Where(pv => pv.User == user).Select(pv => (VoteType?)pv.VoteType).FirstOrDefault(),
+            UserVoteType = p.PostVotes.Where(pv => pv.User == user).Select(pv => (VoteType?)pv.VoteType)
+                .FirstOrDefault(),
             VoteCount = p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
                         p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)
         }).Skip(20 * page).Take(20).ToListAsync();
@@ -110,6 +113,88 @@ public partial class PostService : IPostService
         };
         await _context.PostVotes.AddAsync(vote);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<List<PostDto>> GetHomeFeedPosts(User user, SortOrder sort, TimeSortOrder time, int page)
+    {
+        var timeFilter = time switch
+        {
+            TimeSortOrder.Hour => DateTime.UtcNow.AddHours(-1),
+            TimeSortOrder.Day => DateTime.UtcNow.AddDays(-1),
+            TimeSortOrder.Week => DateTime.UtcNow.AddDays(-7),
+            TimeSortOrder.Month => DateTime.UtcNow.AddMonths(-1),
+            TimeSortOrder.Year => DateTime.UtcNow.AddYears(-1),
+            TimeSortOrder.AllTime => DateTime.MinValue,
+            _ => throw new ArgumentOutOfRangeException(nameof(time), time, null)
+        };
+        var joinedHubs = _context.Users
+            .Where(u => u == user)
+            .SelectMany(u => u.HubMembers.Select(hm => hm.Hub))
+            .Include(h => h.Posts);
+
+        var posts = sort switch
+        {
+            SortOrder.New => joinedHubs.SelectMany(h => h.Posts).OrderByDescending(p => p.CreatedAt),
+            SortOrder.Top => joinedHubs.SelectMany(h => h.Posts).Where(p => p.CreatedAt >= timeFilter)
+                .OrderByDescending(p => p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
+                                        p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)),
+            _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, null)
+        };
+        return await posts.Select(p => new PostDto()
+        {
+            Author = new UserDto() { UserId = p.Author.Id, Username = p.Author.UserName },
+            Title = p.Title,
+            Content = p.Content,
+            Slug = p.Slug,
+            PostId = p.PostId,
+            Type = p.Type,
+            Hub = p.Hub.Name,
+            CreatedAt = p.CreatedAt,
+            UserVoteType = p.PostVotes.Where(pv => pv.User == user).Select(pv => (VoteType?)pv.VoteType)
+                .FirstOrDefault(),
+            VoteCount = p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
+                        p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)
+        }).Skip(20 * page).Take(20).ToListAsync();
+    }
+
+
+    public async Task<List<PostDto>> GetPopularFeedPosts(User? user, SortOrder sort, TimeSortOrder time, int page)
+    {
+        var timeFilter = time switch
+        {
+            TimeSortOrder.Hour => DateTime.UtcNow.AddHours(-1),
+            TimeSortOrder.Day => DateTime.UtcNow.AddDays(-1),
+            TimeSortOrder.Week => DateTime.UtcNow.AddDays(-7),
+            TimeSortOrder.Month => DateTime.UtcNow.AddMonths(-1),
+            TimeSortOrder.Year => DateTime.UtcNow.AddYears(-1),
+            TimeSortOrder.AllTime => DateTime.MinValue,
+            _ => throw new ArgumentOutOfRangeException(nameof(time), time, null)
+        };
+
+
+        var posts = sort switch
+        {
+            SortOrder.New => _context.Posts.OrderByDescending(p => p.CreatedAt),
+            SortOrder.Top => _context.Posts.Where(p => p.CreatedAt >= timeFilter).OrderByDescending(p =>
+                p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
+                p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)),
+            _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, null)
+        };
+        return await posts.Select(p => new PostDto()
+        {
+            Author = new UserDto() { UserId = p.Author.Id, Username = p.Author.UserName },
+            Title = p.Title,
+            Content = p.Content,
+            Slug = p.Slug,
+            PostId = p.PostId,
+            Type = p.Type,
+            Hub = p.Hub.Name,
+            CreatedAt = p.CreatedAt,
+            UserVoteType = p.PostVotes.Where(pv => pv.User == user).Select(pv => (VoteType?)pv.VoteType)
+                .FirstOrDefault(),
+            VoteCount = p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
+                        p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)
+        }).Skip(20 * page).Take(20).ToListAsync();
     }
 
     [GeneratedRegex("[^a-zA-Z ]")]
