@@ -1,56 +1,106 @@
 ﻿import {
   createContext,
-  Dispatch,
   ReactElement,
-  SetStateAction,
+  Reducer,
   useContext,
   useEffect,
-  useState,
+  useReducer,
 } from "react";
 import client from "../api/http.ts";
 import { SidebarHubDto } from "../types.ts";
-
-const AuthContext = createContext<AuthContext | null>(null);
+import { Dispatch } from "react";
+type AuthContext = {
+  state: AuthState;
+  dispatch: Dispatch<AuthReducerAction>;
+};
 type AuthState = {
+  user: AuthUser | null | undefined;
+};
+type AuthUser = {
   username: string;
   userId: string;
   joinedHubs: SidebarHubDto[];
 };
-type AuthContext = {
-  user: AuthState | null | undefined;
-  setUser: Dispatch<SetStateAction<AuthState | null | undefined>>;
+
+type AuthReducerAction =
+  | {
+      type: "set_user";
+      payload: {
+        username: string;
+        userId: string;
+        joinedHubs: SidebarHubDto[];
+      };
+    }
+  | {
+      type: "update_hub";
+      payload: SidebarHubDto;
+    }
+  | {
+      type: "update_hubs";
+      payload: SidebarHubDto[];
+    }
+  | { type: "reset_user" };
+
+const initialState: AuthState = { user: undefined };
+const AuthContext = createContext<AuthContext>({} as AuthContext);
+
+const authReducer: Reducer<AuthState, AuthReducerAction> = (state, action) => {
+  switch (action.type) {
+    case "set_user":
+      return { user: action.payload };
+    case "update_hub":
+      return {
+        user: {
+          ...state.user!,
+          joinedHubs: [...(state.user?.joinedHubs || []), action.payload],
+        },
+      };
+    case "update_hubs":
+      return {
+        user: {
+          ...state.user!,
+          joinedHubs: action.payload,
+        },
+      };
+    case "reset_user":
+      return { user: null };
+    default:
+      throw new Error("Error in authReducer");
+  }
 };
 const AuthProvider = ({ children }: { children: ReactElement }) => {
-  const [user, setUser] = useState<AuthState | null | undefined>(undefined);
+  const [state, dispatch] = useReducer(authReducer, initialState);
   useEffect(() => {
-    if (user === undefined || user === null) {
+    if (state.user === null || state.user === undefined) {
       client
         .GET("/api/users/me")
         .then(({ data }) => {
           if (data === undefined) {
             throw new Error("No data");
           }
-          setUser({
-            username: data.username,
-            userId: data.userId,
-            joinedHubs: data.joinedHubs,
+          dispatch({
+            type: "set_user",
+            payload: {
+              username: data.username,
+              userId: data.userId,
+              joinedHubs: data.joinedHubs,
+            },
           });
         })
-        .catch((error) => {
-          console.log(error);
-          setUser(null);
+        .catch(() => {
+          dispatch({ type: "reset_user" });
         });
     }
-  }, []);
+  }, [state.user]);
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ state, dispatch }}>
       {children}
     </AuthContext.Provider>
   );
 };
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context == null)
+  if (context === undefined)
     throw new Error("AuthContext has not been initialized yet");
   return context;
 };
