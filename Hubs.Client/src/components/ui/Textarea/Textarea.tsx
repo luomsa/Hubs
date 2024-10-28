@@ -11,7 +11,7 @@ const Textarea = forwardRef(
     props: JSX.IntrinsicAttributes &
       ClassAttributes<HTMLTextAreaElement> &
       InputHTMLAttributes<HTMLTextAreaElement>,
-    ref: ForwardedRef<any>,
+    ref: ForwardedRef<HTMLTextAreaElement>,
   ) => {
     return (
       <textarea className={styles.textarea} ref={ref} {...props}></textarea>

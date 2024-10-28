@@ -11,7 +11,7 @@ const Input = forwardRef(
     props: JSX.IntrinsicAttributes &
       ClassAttributes<HTMLInputElement> &
       InputHTMLAttributes<HTMLInputElement>,
-    ref: ForwardedRef<any>,
+    ref: ForwardedRef<HTMLInputElement>,
   ) => {
     return <input ref={ref} className={styles.input} {...props} />;
   },
