@@ -17,7 +17,6 @@ const NewHubModal = () => {
     register,
     handleSubmit,
     setError,
-    clearErrors,
     formState: { errors },
   } = useForm<Inputs>({
     mode: "onBlur",

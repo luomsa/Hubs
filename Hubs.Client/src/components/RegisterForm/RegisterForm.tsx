@@ -18,14 +18,12 @@ const RegisterForm = () => {
     mode: "onBlur",
   });
   const onSubmit: SubmitHandler<Inputs> = async (input) => {
-    console.log(input);
     try {
       await client.POST("/api/auth/register", {
         body: input,
       });
     } catch (error) {
       if (error instanceof ApiError) {
-        console.log("error!!", error);
         setError(`root.${error.message}`, {
           type: "manual",
           message: error.message,
