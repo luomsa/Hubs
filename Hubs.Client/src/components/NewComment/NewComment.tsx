@@ -6,8 +6,10 @@ import { CommentDto, NewCommentRequest, PostParams } from "../../types.ts";
 import client from "../../api/http.ts";
 import { useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-const NewComment = () => {
+type Props = {
+  page: number;
+};
+const NewComment = ({ page }: Props) => {
   const queryClient = useQueryClient();
   const params = useParams() as PostParams;
   const mutation = useMutation({
@@ -19,9 +21,8 @@ const NewComment = () => {
       return data;
     },
     onSuccess: (newComment) => {
-      console.log("newComment", newComment);
       queryClient.setQueryData(
-        ["comment", params.postId],
+        ["comment", page, params.postId],
         (old: CommentDto[]) => [newComment, ...old],
       );
       reset();
@@ -37,7 +38,6 @@ const NewComment = () => {
     formState: { errors },
   } = useForm<NewCommentRequest>();
   const onSubmit: SubmitHandler<NewCommentRequest> = async (input) => {
-    console.log("onSubmit", input);
     try {
       mutation.mutate(input);
     } catch (error) {

@@ -53,14 +53,15 @@ public class PostController : ControllerBase
     [Route("{postId}/comments")]
     [HttpGet]
     [ProducesResponseType<List<CommentDto>>(StatusCodes.Status200OK)]
-    public async Task<IResult> GetPostComments(string postId)
+    public async Task<IResult> GetPostComments(string postId, int page = 0)
     {
         var parsedId = int.TryParse(postId, out var id);
         if (parsedId is false) return TypedResults.BadRequest();
-        var comment = await _commentService.GetPostCommentsAsync(id);
+        var comment = await _commentService.GetPostCommentsAsync(id, page);
         return TypedResults.Ok(comment);
     }
 
+    [Authorize]
     [Route("{postId}/comments")]
     [HttpPost]
     [ProducesResponseType<CommentDto>(StatusCodes.Status200OK)]
@@ -74,6 +75,7 @@ public class PostController : ControllerBase
         return TypedResults.Ok(comment);
     }
 
+    [Authorize]
     [Route("{postId}/vote")]
     [HttpPost]
     public async Task<IResult> VotePost(string postId, [FromQuery(Name = "type")] VoteType voteType)

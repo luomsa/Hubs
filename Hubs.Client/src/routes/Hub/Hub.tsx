@@ -14,12 +14,14 @@ import Button from "../../components/ui/Button/Button.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { ChangeEvent, useState } from "react";
 import PostActions from "../../components/PostActions/PostActions.tsx";
+import Pagination from "../../components/Pagination/Pagination.tsx";
+import toast from "react-hot-toast";
 
 const Hub = () => {
   const hub = useLoaderData() as HubDto;
   const { name } = useParams() as HubParams;
   const revalidator = useRevalidator();
-  const auth = useAuth();
+  const { state, dispatch } = useAuth();
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState<SortBy>("New");
   const [timeSort, setTimeSort] = useState<TopSortBy>(undefined);
@@ -34,7 +36,6 @@ const Hub = () => {
           query: { page, sort: sortBy, time: timeSort },
         },
       });
-      console.log("data", data);
       return data;
     },
   });
@@ -48,12 +49,15 @@ const Hub = () => {
         },
       });
       revalidator.revalidate();
-      if (auth.user !== null && auth.user !== undefined && data !== undefined) {
-        const updatedHubs = auth.user.joinedHubs.concat(data);
-        auth.setUser({ ...auth.user, joinedHubs: updatedHubs });
+      if (
+        state.user !== null &&
+        state.user !== undefined &&
+        data !== undefined
+      ) {
+        dispatch({ type: "update_hub", payload: data });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error("Couldn't join hub, try again later.");
     }
   };
   const leaveHub = async () => {
@@ -66,15 +70,14 @@ const Hub = () => {
         },
       });
       revalidator.revalidate();
-      if (auth.user !== null && auth.user !== undefined) {
-        const updatedHubs = auth.user.joinedHubs.filter(
+      if (state.user !== null && state.user !== undefined) {
+        const updatedHubs = state.user.joinedHubs.filter(
           (h) => h.name !== hub.name,
         );
-        console.log(updatedHubs);
-        auth.setUser({ ...auth.user, joinedHubs: updatedHubs });
+        dispatch({ type: "update_hubs", payload: updatedHubs });
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error("Couldn't leave hub, try again later.");
     }
   };
   const handleSort = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -100,7 +103,7 @@ const Hub = () => {
         },
       });
     },
-    onSuccess: (_result, variables, _context) => {
+    onSuccess: (_result, variables) => {
       queryClient.setQueryData(
         ["hubPosts", hub.name, page, { sort: sortBy, timeSort }],
         (old: PostDto[]) => {
@@ -128,7 +131,7 @@ const Hub = () => {
     <div>
       <div className={styles["hub-header"]}>
         <h1>{hub.name}</h1>
-        {auth.user !== null && (
+        {state.user !== null && (
           <div className={styles["hub-buttons"]}>
             <Button onClick={() => navigate("submit")}>Create a post</Button>
             {hub.isJoined ? (
@@ -155,12 +158,12 @@ const Hub = () => {
           </select>
         )}
       </div>
+      <Pagination page={page} setPage={setPage} />
       <div className={styles.wrapper}>
         <div className={styles.content}>
           {query.data?.map((post) => {
             return (
               <PostItem
-                hubName={hub.name}
                 page={page}
                 timeSort={timeSort}
                 sortBy={sortBy}
@@ -180,6 +183,7 @@ const Hub = () => {
         </div>
         <HubInfo {...hub} />
       </div>
+      <Pagination page={page} setPage={setPage} />
     </div>
   );
 };

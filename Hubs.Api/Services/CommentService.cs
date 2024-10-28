@@ -38,7 +38,7 @@ public class CommentService : ICommentService
         };
     }
 
-    public async Task<List<CommentDto>> GetPostCommentsAsync(int postId)
+    public async Task<List<CommentDto>> GetPostCommentsAsync(int postId, int page)
     {
         return await _context.Comments.Where(c => c.Post.PostId == postId).Select(p => new CommentDto()
         {
@@ -47,6 +47,6 @@ public class CommentService : ICommentService
             PostId = p.Post.PostId,
             CommentId = p.CommentId,
             CreatedAt = p.CreatedAt
-        }).ToListAsync();
+        }).Skip(20 * page).Take(20).ToListAsync();
     }
 }
