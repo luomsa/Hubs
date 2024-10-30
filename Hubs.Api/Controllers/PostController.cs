@@ -45,9 +45,9 @@ public class PostController : ControllerBase
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         //if (user is null) return TypedResults.Unauthorized();
-        var dto = await _postService.GetHubPostAsync(postId, user);
-        if (dto is null) return TypedResults.BadRequest();
-        return TypedResults.Ok(dto);
+        var post = await _postService.GetHubPostAsync(postId, user);
+        if (post is null) return TypedResults.BadRequest();
+        return TypedResults.Ok(post);
     }
 
     [Route("{postId}/comments")]
@@ -58,7 +58,7 @@ public class PostController : ControllerBase
         var parsedId = int.TryParse(postId, out var id);
         if (parsedId is false) return TypedResults.BadRequest();
         var comments = await _commentService.GetPostCommentsAsync(id, page);
-        return TypedResults.Ok(new PostCommentsDto() { Comments = comments, HasMore = comments.Count == 21 });
+        return TypedResults.Ok(new PostCommentsDto() { Comments = comments.Count > 0 ? comments[..^1] : comments, HasMore = comments.Count == 21 });
     }
 
     [Authorize]

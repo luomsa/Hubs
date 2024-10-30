@@ -30,7 +30,7 @@ public class FeedController : ControllerBase
         var user = await _userManager.GetUserAsync(HttpContext.User);
         if (user is null) return TypedResults.Unauthorized();
         var posts = await _postService.GetHomeFeedPosts(user, sort, time, page);
-        return TypedResults.Ok(new HubPostsDto() {Posts = posts, HasMore = posts.Count == 21});
+        return TypedResults.Ok(new HubPostsDto() {Posts = posts.Count > 0 ? posts[..^1] : posts, HasMore = posts.Count == 21});
     }
     [Route("popular")]
     [HttpGet]
@@ -40,7 +40,7 @@ public class FeedController : ControllerBase
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         var posts = await _postService.GetPopularFeedPosts(user, sort, time, page);
-        return TypedResults.Ok(new HubPostsDto() { Posts = posts, HasMore = posts.Count == 21 });
+        return TypedResults.Ok(new HubPostsDto() { Posts = posts.Count > 0 ? posts[..^1] : posts, HasMore = posts.Count == 21 });
     }
 
   
