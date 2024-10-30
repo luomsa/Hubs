@@ -6,13 +6,14 @@ import styles from "../Hub/Hub.module.css";
 import Pagination from "../../components/Pagination/Pagination.tsx";
 import PostItem from "../../components/PostItem/PostItem.tsx";
 import PostActions from "../../components/PostActions/PostActions.tsx";
+import SortingActions from "../../components/SortingActions/SortingActions.tsx";
 
 const Popular = () => {
   const [sortBy, setSortBy] = useState<SortBy>("Top");
   const [timeSort, setTimeSort] = useState<TopSortBy>("Day");
   const [page, setPage] = useState(0);
   const queryClient = useQueryClient();
-  const query = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["popularPosts", page, { sort: sortBy, timeSort }],
     queryFn: async () => {
       const { data } = await client.GET("/api/feed/popular", {
@@ -71,28 +72,36 @@ const Popular = () => {
     mutation.mutate({ postId, type });
   };
 
+  if (isPending) {
+    return (
+      <div>
+        <SortingActions
+          sortBy={sortBy}
+          timeSort={timeSort}
+          handleSort={handleSort}
+          handleTimeSort={handleTimeSort}
+        />
+        <div className={styles.wrapper}>
+          <div className={styles.content}>Loading...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <div className={styles.sort}>
-        <select value={sortBy} onChange={handleSort}>
-          <option value="New">New</option>
-          <option value="Top">Top</option>
-        </select>
-        {sortBy === "Top" && (
-          <select value={timeSort} onChange={handleTimeSort}>
-            <option value="Hour">Hour</option>
-            <option value="Day">Day</option>
-            <option value="Week">Week</option>
-            <option value="Month">Month</option>
-            <option value="Year">Year</option>
-            <option value="AllTime">All time</option>
-          </select>
-        )}
-      </div>
-      <Pagination page={page} setPage={setPage} />
+      <SortingActions
+        sortBy={sortBy}
+        timeSort={timeSort}
+        handleSort={handleSort}
+        handleTimeSort={handleTimeSort}
+      />
+      {page === 0 && data?.posts.length === 0 ? null : (
+        <Pagination page={page} setPage={setPage} hasMore={!!data?.hasMore} />
+      )}
       <div className={styles.wrapper}>
         <div className={styles.content}>
-          {query.data?.map((post) => {
+          {data?.posts.map((post) => {
             return (
               <PostItem
                 hubName={post.hub}
@@ -111,10 +120,12 @@ const Popular = () => {
               </PostItem>
             );
           })}
-          {query.data?.length === 0 && <p>No posts found</p>}
+          {data?.posts.length === 0 && <p>No posts found</p>}
         </div>
       </div>
-      <Pagination page={page} setPage={setPage} />
+      {page === 0 && data?.posts.length === 0 ? null : (
+        <Pagination page={page} setPage={setPage} hasMore={!!data?.hasMore} />
+      )}
     </div>
   );
 };

@@ -141,9 +141,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "text/plain": components["schemas"]["PostDto"][];
-            "application/json": components["schemas"]["PostDto"][];
-            "text/json": components["schemas"]["PostDto"][];
+            "text/plain": components["schemas"]["HubPostsDto"];
+            "application/json": components["schemas"]["HubPostsDto"];
+            "text/json": components["schemas"]["HubPostsDto"];
           };
         };
       };
@@ -182,9 +182,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "text/plain": components["schemas"]["PostDto"][];
-            "application/json": components["schemas"]["PostDto"][];
-            "text/json": components["schemas"]["PostDto"][];
+            "text/plain": components["schemas"]["HubPostsDto"];
+            "application/json": components["schemas"]["HubPostsDto"];
+            "text/json": components["schemas"]["HubPostsDto"];
           };
         };
       };
@@ -342,9 +342,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "text/plain": components["schemas"]["PostDto"][];
-            "application/json": components["schemas"]["PostDto"][];
-            "text/json": components["schemas"]["PostDto"][];
+            "text/plain": components["schemas"]["HubPostsDto"];
+            "application/json": components["schemas"]["HubPostsDto"];
+            "text/json": components["schemas"]["HubPostsDto"];
           };
         };
       };
@@ -539,9 +539,9 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "text/plain": components["schemas"]["CommentDto"][];
-            "application/json": components["schemas"]["CommentDto"][];
-            "text/json": components["schemas"]["CommentDto"][];
+            "text/plain": components["schemas"]["PostCommentsDto"];
+            "application/json": components["schemas"]["PostCommentsDto"];
+            "text/json": components["schemas"]["PostCommentsDto"];
           };
         };
       };
@@ -717,6 +717,10 @@ export interface components {
       /** Format: date-time */
       createdAt: string;
     };
+    HubPostsDto: {
+      posts: components["schemas"]["PostDto"][];
+      hasMore: boolean;
+    };
     HubSearchDto: {
       /** Format: int32 */
       hubId: number;
@@ -736,6 +740,10 @@ export interface components {
       content: string;
       hubName: string;
       type: components["schemas"]["PostType"];
+    };
+    PostCommentsDto: {
+      comments: components["schemas"]["CommentDto"][];
+      hasMore: boolean;
     };
     PostDto: {
       title: string;

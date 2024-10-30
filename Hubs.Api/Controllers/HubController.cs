@@ -54,13 +54,14 @@ public class HubController : ControllerBase
 
     [Route("{name}/posts")]
     [HttpGet]
-    [ProducesResponseType<List<PostDto>>(StatusCodes.Status200OK)]
-    public async Task<IResult> GetHubPosts(string name, [FromQuery(Name = "time")] TimeSortOrder time = TimeSortOrder.Day, [FromQuery(Name = "page")] int page = 0,
-    [FromQuery(Name = "sort")] SortOrder sort = SortOrder.New)
+    [ProducesResponseType<HubPostsDto>(StatusCodes.Status200OK)]
+    public async Task<IResult> GetHubPosts(string name,
+        [FromQuery(Name = "time")] TimeSortOrder time = TimeSortOrder.Day, [FromQuery(Name = "page")] int page = 0,
+        [FromQuery(Name = "sort")] SortOrder sort = SortOrder.New)
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         var posts = await _postService.GetHubPostsAsync(name, sort, time, page, user);
-        return TypedResults.Ok(posts);
+        return TypedResults.Ok(new HubPostsDto() { Posts = posts, HasMore = posts.Count == 21 });
     }
 
     [Authorize]

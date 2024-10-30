@@ -23,24 +23,24 @@ public class FeedController : ControllerBase
     [Route("home")]
     [HttpGet]
     [Authorize]
-    [ProducesResponseType<List<PostDto>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<HubPostsDto>(StatusCodes.Status200OK)]
     public async Task<IResult> GetHomeFeed([FromQuery(Name = "time")] TimeSortOrder time = TimeSortOrder.Day, [FromQuery(Name = "page")] int page = 0,
         [FromQuery(Name = "sort")] SortOrder sort = SortOrder.New)
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         if (user is null) return TypedResults.Unauthorized();
-        var result = await _postService.GetHomeFeedPosts(user, sort, time, page);
-        return TypedResults.Ok(result);
+        var posts = await _postService.GetHomeFeedPosts(user, sort, time, page);
+        return TypedResults.Ok(new HubPostsDto() {Posts = posts, HasMore = posts.Count == 21});
     }
     [Route("popular")]
     [HttpGet]
-    [ProducesResponseType<List<PostDto>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<HubPostsDto>(StatusCodes.Status200OK)]
     public async Task<IResult> GetPopularFeed([FromQuery(Name = "time")] TimeSortOrder time = TimeSortOrder.Day, [FromQuery(Name = "page")] int page = 0,
         [FromQuery(Name = "sort")] SortOrder sort = SortOrder.New)
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
-        var result = await _postService.GetPopularFeedPosts(user, sort, time, page);
-        return TypedResults.Ok(result);
+        var posts = await _postService.GetPopularFeedPosts(user, sort, time, page);
+        return TypedResults.Ok(new HubPostsDto() { Posts = posts, HasMore = posts.Count == 21 });
     }
 
   

@@ -52,13 +52,13 @@ public class PostController : ControllerBase
 
     [Route("{postId}/comments")]
     [HttpGet]
-    [ProducesResponseType<List<CommentDto>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<PostCommentsDto>(StatusCodes.Status200OK)]
     public async Task<IResult> GetPostComments(string postId, int page = 0)
     {
         var parsedId = int.TryParse(postId, out var id);
         if (parsedId is false) return TypedResults.BadRequest();
-        var comment = await _commentService.GetPostCommentsAsync(id, page);
-        return TypedResults.Ok(comment);
+        var comments = await _commentService.GetPostCommentsAsync(id, page);
+        return TypedResults.Ok(new PostCommentsDto() { Comments = comments, HasMore = comments.Count == 21 });
     }
 
     [Authorize]

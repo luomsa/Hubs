@@ -14,7 +14,7 @@ const Post = () => {
   const params = useParams() as PostParams;
   const { state } = useAuth();
   const [page, setPage] = useState(0);
-  const query = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["comment", page, params.postId],
     queryFn: async () => {
       const { data } = await client.GET("/api/posts/{postId}/comments", {
@@ -29,16 +29,32 @@ const Post = () => {
     },
   });
   const { post, hub } = useLoaderData() as PostDetailType;
+  if (isPending) {
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.content}>
+          <PostDetail {...post} />
+          Loading...
+        </div>
+        <HubInfo {...hub} />
+      </div>
+    );
+  }
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
         <PostDetail {...post} />
         {state.user !== null && <NewComment page={page} />}
-        <Pagination page={page} setPage={setPage} />
-        {query.data?.map((comment) => {
+        {page === 0 && data?.comments.length === 0 ? null : (
+          <Pagination page={page} setPage={setPage} hasMore={!!data?.hasMore} />
+        )}
+        {data?.comments.map((comment) => {
           return <Comment key={comment.commentId} {...comment}></Comment>;
         })}
-        <Pagination page={page} setPage={setPage} />
+        {data?.comments.length == 0 && <div>No comments yet</div>}
+        {page === 0 && data?.comments.length === 0 ? null : (
+          <Pagination page={page} setPage={setPage} hasMore={!!data?.hasMore} />
+        )}
       </div>
 
       <HubInfo {...hub} />

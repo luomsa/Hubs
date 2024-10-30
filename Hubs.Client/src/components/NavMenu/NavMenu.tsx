@@ -8,11 +8,12 @@ import client from "../../api/http.ts";
 import { HubSearchDto } from "../../types.ts";
 import { Link } from "react-router-dom";
 import { IconMenu2 } from "@tabler/icons-react";
+import Button from "../ui/Button/Button.tsx";
 type Props = {
   toggleMenu: () => void;
 };
 const NavMenu = ({ toggleMenu }: Props) => {
-  const { state } = useAuth();
+  const { state, dispatch } = useAuth();
   const [search, setSearch] = useState("");
 
   const [debounceVal, setDebounceVal] = useState<HubSearchDto[]>([]);
@@ -31,6 +32,11 @@ const NavMenu = ({ toggleMenu }: Props) => {
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) =>
     setSearch(e.target.value);
 
+  const handleLogout = async () => {
+    await client.POST("/api/auth/logout");
+    dispatch({ type: "reset_user" });
+  };
+
   useEffect(() => {
     document.body.addEventListener("click", (event) => {
       const target = event.target as HTMLElement;
@@ -42,6 +48,7 @@ const NavMenu = ({ toggleMenu }: Props) => {
       }
     });
   }, []);
+
   return (
     <div className={styles.header}>
       <div className={styles.logo}>
@@ -81,7 +88,13 @@ const NavMenu = ({ toggleMenu }: Props) => {
           ))}
         </div>
       </div>
-      <div>{state.user === null ? <AuthModal /> : <p>logged in</p>}</div>
+      <div>
+        {state.user === null ? (
+          <AuthModal />
+        ) : (
+          <Button onClick={handleLogout}>Logout</Button>
+        )}
+      </div>
     </div>
   );
 };

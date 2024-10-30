@@ -16,6 +16,7 @@ import { ChangeEvent, useState } from "react";
 import PostActions from "../../components/PostActions/PostActions.tsx";
 import Pagination from "../../components/Pagination/Pagination.tsx";
 import toast from "react-hot-toast";
+import SortingActions from "../../components/SortingActions/SortingActions.tsx";
 
 const Hub = () => {
   const hub = useLoaderData() as HubDto;
@@ -27,7 +28,7 @@ const Hub = () => {
   const [timeSort, setTimeSort] = useState<TopSortBy>(undefined);
   const [page, setPage] = useState(0);
   const queryClient = useQueryClient();
-  const query = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["hubPosts", hub.name, page, { sort: sortBy, timeSort }],
     queryFn: async () => {
       const { data } = await client.GET("/api/hubs/{name}/posts", {
@@ -127,6 +128,36 @@ const Hub = () => {
   const handleVote = (postId: string, type: string) => {
     mutation.mutate({ postId, type });
   };
+
+  if (isPending) {
+    return (
+      <div>
+        <div className={styles["hub-header"]}>
+          <h1>{hub.name}</h1>
+          {state.user !== null && (
+            <div className={styles["hub-buttons"]}>
+              <Button onClick={() => navigate("submit")}>Create a post</Button>
+              {hub.isJoined ? (
+                <Button onClick={leaveHub}>Leave</Button>
+              ) : (
+                <Button onClick={joinHub}>Join</Button>
+              )}
+            </div>
+          )}
+        </div>
+        <SortingActions
+          sortBy={sortBy}
+          timeSort={timeSort}
+          handleSort={handleSort}
+          handleTimeSort={handleTimeSort}
+        />
+        <div className={styles.wrapper}>
+          <div className={styles.content}>Loading...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className={styles["hub-header"]}>
@@ -142,26 +173,18 @@ const Hub = () => {
           </div>
         )}
       </div>
-      <div className={styles.sort}>
-        <select value={sortBy} onChange={handleSort}>
-          <option value="New">New</option>
-          <option value="Top">Top</option>
-        </select>
-        {sortBy === "Top" && (
-          <select value={timeSort} onChange={handleTimeSort}>
-            <option value="Hour">Hour</option>
-            <option value="Day">Day</option>
-            <option value="Week">Week</option>
-            <option value="Month">Month</option>
-            <option value="Year">Year</option>
-            <option value="AllTime">All time</option>
-          </select>
-        )}
-      </div>
-      <Pagination page={page} setPage={setPage} />
+      <SortingActions
+        sortBy={sortBy}
+        timeSort={timeSort}
+        handleSort={handleSort}
+        handleTimeSort={handleTimeSort}
+      />
+      {page === 0 && data?.posts.length === 0 ? null : (
+        <Pagination page={page} setPage={setPage} hasMore={!!data?.hasMore} />
+      )}
       <div className={styles.wrapper}>
         <div className={styles.content}>
-          {query.data?.map((post) => {
+          {data?.posts.map((post) => {
             return (
               <PostItem
                 page={page}
@@ -179,11 +202,13 @@ const Hub = () => {
               </PostItem>
             );
           })}
-          {query.data?.length === 0 && <p>No posts found</p>}
+          {data?.posts.length === 0 && <p>No posts found</p>}
         </div>
         <HubInfo {...hub} />
       </div>
-      <Pagination page={page} setPage={setPage} />
+      {page === 0 && data?.posts.length === 0 ? null : (
+        <Pagination page={page} setPage={setPage} hasMore={!!data?.hasMore} />
+      )}
     </div>
   );
 };

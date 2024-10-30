@@ -75,7 +75,7 @@ public partial class PostService : IPostService
                 .FirstOrDefault(),
             VoteCount = p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
                         p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)
-        }).Skip(20 * page).Take(20).ToListAsync();
+        }).Skip(20 * page).Take(21).ToListAsync();
     }
 
     public async Task<PostDto?> GetHubPostAsync(int postId, User? user)
@@ -154,7 +154,7 @@ public partial class PostService : IPostService
                 .FirstOrDefault(),
             VoteCount = p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
                         p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)
-        }).Skip(20 * page).Take(20).ToListAsync();
+        }).Skip(20 * page).Take(21).ToListAsync();
     }
 
 
@@ -194,7 +194,7 @@ public partial class PostService : IPostService
                 .FirstOrDefault(),
             VoteCount = p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
                         p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)
-        }).Skip(20 * page).Take(20).ToListAsync();
+        }).Skip(20 * page).Take(21).ToListAsync();
     }
 
     [GeneratedRegex("[^a-zA-Z ]")]
