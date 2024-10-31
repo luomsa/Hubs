@@ -1,6 +1,4 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using Hubs.Api;
 using Hubs.Api.Data;
 using Hubs.Api.Exceptions;
 using Hubs.Api.Services;
@@ -10,20 +8,20 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var services = builder.Services;
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddControllers(options =>
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
+services.AddControllers(options =>
 {
     options.ModelMetadataDetailsProviders.Add(new SystemTextJsonValidationMetadataProvider());
 }).AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 ;
-builder.Services.AddRouting(options => { options.LowercaseUrls = true; });
+services.AddRouting(options => { options.LowercaseUrls = true; });
 var connectionString = builder.Configuration["HUB_CONNECTION_STRING"];
-builder.Services.AddDbContext<HubDbContext>(options => { options.UseNpgsql(connectionString); });
-builder.Services.AddIdentity<User, IdentityRole>(options =>
+services.AddDbContext<HubDbContext>(options => { options.UseNpgsql(connectionString); });
+services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 8;
@@ -33,7 +31,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.Password.RequiredUniqueChars = 0;
 }).AddEntityFrameworkStores<HubDbContext>();
 
-builder.Services.ConfigureApplicationCookie(options =>
+services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.Path = "/";
     options.Events.OnRedirectToLogin = context =>
@@ -46,8 +44,10 @@ builder.Services.ConfigureApplicationCookie(options =>
                 problemFactory.CreateProblemDetails(context.HttpContext, StatusCodes.Status401Unauthorized);
             return context.Response.WriteAsJsonAsync(meProblem);
         }
+
         var problem =
-            problemFactory.CreateProblemDetails(context.HttpContext, StatusCodes.Status401Unauthorized, "Session expired");
+            problemFactory.CreateProblemDetails(context.HttpContext, StatusCodes.Status401Unauthorized,
+                "Session expired");
         return context.Response.WriteAsJsonAsync(problem);
     };
     options.Events.OnRedirectToAccessDenied = context =>
@@ -60,13 +60,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     };
 });
 
-builder.Services.AddSwaggerGen(options => { options.SupportNonNullableReferenceTypes(); });
-builder.Services.AddScoped<IHubService, HubService>();
-builder.Services.AddScoped<IPostService, PostService>();
-builder.Services.AddScoped<IHubService, HubService>();
-builder.Services.AddScoped<ICommentService, CommentService>();
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-// builder.Services.AddHttpContextAccessor();
+services.AddSwaggerGen(options => { options.SupportNonNullableReferenceTypes(); });
+services.AddScoped<IHubService, HubService>();
+services.AddScoped<IPostService, PostService>();
+services.AddScoped<IHubService, HubService>();
+services.AddScoped<ICommentService, CommentService>();
+services.AddExceptionHandler<GlobalExceptionHandler>();
+// services.AddHttpContextAccessor();
 var app = builder.Build();
 app.UseExceptionHandler("/error");
 // Configure the HTTP request pipeline.
