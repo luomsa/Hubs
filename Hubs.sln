@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hubs.Api", "Hubs.Api\Hubs.Api.csproj", "{2B43ED6D-A97F-4F94-B7E2-A87000E909A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hubs.Test", "Hubs.Test\Hubs.Test.csproj", "{CEF9D885-EE84-480A-B532-B27C5CDBD9BF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{2B43ED6D-A97F-4F94-B7E2-A87000E909A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B43ED6D-A97F-4F94-B7E2-A87000E909A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B43ED6D-A97F-4F94-B7E2-A87000E909A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEF9D885-EE84-480A-B532-B27C5CDBD9BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEF9D885-EE84-480A-B532-B27C5CDBD9BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEF9D885-EE84-480A-B532-B27C5CDBD9BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEF9D885-EE84-480A-B532-B27C5CDBD9BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
