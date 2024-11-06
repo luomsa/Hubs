@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Hubs.Api.Models;
 
-namespace Hubs.Api.Data;
+namespace Hubs.Api.Models;
 
 public record PostCommentsDto
 {
