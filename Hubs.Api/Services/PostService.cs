@@ -63,7 +63,7 @@ public partial class PostService : IPostService
         };
         return await posts.Select(p => new PostDto()
         {
-            Author = new UserDto() { UserId = p.Author.Id, Username = p.Author.UserName },
+            Author = new PostUserDto { UserId = p.Author.Id, Username = p.Author.UserName },
             Title = p.Title,
             Content = p.Content,
             Slug = p.Slug,
@@ -82,7 +82,7 @@ public partial class PostService : IPostService
     {
         return await _context.Posts.Where(p => p.PostId == postId).Select(p => new PostDto()
         {
-            Author = new UserDto() { UserId = p.Author.Id, Username = p.Author.UserName },
+            Author = new PostUserDto { UserId = p.Author.Id, Username = p.Author.UserName },
             Title = p.Title,
             Content = p.Content,
             Slug = p.Slug,
@@ -142,7 +142,7 @@ public partial class PostService : IPostService
         };
         return await posts.Select(p => new PostDto()
         {
-            Author = new UserDto() { UserId = p.Author.Id, Username = p.Author.UserName },
+            Author = new PostUserDto { UserId = p.Author.Id, Username = p.Author.UserName },
             Title = p.Title,
             Content = p.Content,
             Slug = p.Slug,
@@ -182,7 +182,7 @@ public partial class PostService : IPostService
         };
         return await posts.Select(p => new PostDto()
         {
-            Author = new UserDto() { UserId = p.Author.Id, Username = p.Author.UserName },
+            Author = new PostUserDto { UserId = p.Author.Id, Username = p.Author.UserName },
             Title = p.Title,
             Content = p.Content,
             Slug = p.Slug,
