@@ -48,7 +48,11 @@ const LoginForm = ({ closeDialog }: LoginFormProps) => {
       });
       if (searchParams.has("destination")) {
         const destination = searchParams.get("destination") as string;
-        navigate(destination);
+        const parsedDestination = destination.replace(
+          "^https{0,1}:\\/\\/$",
+          "",
+        );
+        navigate(parsedDestination);
       } else {
         revalidator.revalidate();
         closeDialog?.();
