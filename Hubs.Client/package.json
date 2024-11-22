@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-types": "npx openapi-typescript http://localhost:5083/swagger/v1/swagger.json -o ./src/api/schema.d.ts",
+    "generate-types": "npx openapi-typescript http://localhost:5083/openapi/v1.json -o ./src/api/schema.d.ts",
     "dpdm": "dpdm"
   },
   "dependencies": {
