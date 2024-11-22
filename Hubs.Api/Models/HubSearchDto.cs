@@ -4,7 +4,7 @@ namespace Hubs.Api.Models;
 
 public record HubSearchDto
 {
-     [Required] public int HubId { get; set; }
-     [Required] public string Name { get; set; } = null!;
-     [Required] public int TotalMembers { get; set; }
+    public required int HubId { get; set; }
+    public required string Name { get; set; }
+    public required int TotalMembers { get; set; }
 }

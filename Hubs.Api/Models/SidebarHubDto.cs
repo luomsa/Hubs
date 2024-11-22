@@ -4,6 +4,6 @@ namespace Hubs.Api.Models;
 
 public record SidebarHubDto()
 {
-    [Required] public int HubId { get; set; }
-    [Required] public string Name { get; set; } = null!;
+    public int HubId { get; set; }
+    public required string Name { get; set; }
 };

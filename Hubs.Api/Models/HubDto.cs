@@ -4,15 +4,12 @@ namespace Hubs.Api.Models;
 
 public record HubDto()
 {
+    public required string Name { get; set; }
 
-    [Required] public string Name { get; set; } = null!;
+    public required string Description { get; set; } 
+    public required int TotalMembers { get; set; }
 
-    [Required] public string Description { get; set; } = null!;
+    public required bool IsJoined { get; set; }
 
-    [Required] public int TotalMembers { get; set; }
-    
-    [Required] public bool IsJoined { get; set; }
-    
-    [Required] public DateTime CreatedAt { get; set; }
-    
+    public required DateTime CreatedAt { get; set; }
 }

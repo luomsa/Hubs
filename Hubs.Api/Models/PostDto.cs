@@ -7,16 +7,15 @@ namespace Hubs.Api.Models;
 
 public record PostDto
 {
-    [Required] public string Title { get; set; } = null!;
-    [Required] public string Content { get; set; } = null!;
-    [Required] public string Slug { get; set; } = null!;
-    [Required] public UserDto Author { get; set; } = null!;
-    [Required] public int PostId { get; set; }
-    [Required] public DateTime CreatedAt { get; set; }
-    [Required] public int VoteCount { get; set; }
-    [Required] public VoteType? UserVoteType { get; set; }
-
-    [Required] public string Hub { get; set; } = null!;
-    [Required] public string Url => $"/hub/{Hub}/{PostId}/{Slug}";
-    [Required] public PostType Type { get; set; }
+    public required string Title { get; set; }
+    public required string Content { get; set; }
+    public required string Slug { get; set; }
+    public required PostUserDto Author { get; set; }
+    public required int PostId { get; set; }
+    public required DateTime CreatedAt { get; set; }
+    public required int VoteCount { get; set; }
+    public VoteType? UserVoteType { get; set; }
+    public required string Hub { get; set; }
+    public string Url => $"/hub/{Hub}/{PostId}/{Slug}";
+    public required PostType Type { get; set; }
 }

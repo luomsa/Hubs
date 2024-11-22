@@ -5,7 +5,7 @@ namespace Hubs.Api.Models;
 
 public record NewPostDto()
 {
-  [Required] public int PostId { get; set; }
-  [Required] public string Slug { get; set; } = null!;
-  [Required] public PostType Type { get; set; }
+    public required int PostId { get; set; }
+    public required string Slug { get; set; }
+    public required PostType Type { get; set; }
 };

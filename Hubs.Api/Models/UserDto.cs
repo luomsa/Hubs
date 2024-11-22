@@ -4,7 +4,7 @@ namespace Hubs.Api.Models;
 
 public record UserDto()
 {
-    [Required] public string Username { get; init; } = null!;
-    [Required] public string UserId { get; init; } = null!;
-    [Required] public ICollection<SidebarHubDto> JoinedHubs { get; set; } = [];
+    public required string Username { get; init; }
+    public required string UserId { get; init; }
+    public required ICollection<SidebarHubDto> JoinedHubs { get; set; } = [];
 };
