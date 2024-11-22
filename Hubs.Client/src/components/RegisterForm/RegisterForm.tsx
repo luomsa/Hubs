@@ -3,6 +3,7 @@ import Button from "../ui/Button/Button.tsx";
 import client, { ApiError } from "../../api/http.ts";
 import Input from "../ui/Input/Input.tsx";
 import styles from "./RegisterForm.module.css";
+import { useState } from "react";
 type Inputs = {
   username: string;
   password: string;
@@ -13,15 +14,22 @@ const RegisterForm = () => {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
   } = useForm<Inputs>({
     mode: "onBlur",
   });
+  const [success, setSuccess] = useState("");
   const onSubmit: SubmitHandler<Inputs> = async (input) => {
     try {
       await client.POST("/api/auth/register", {
-        body: input,
+        body: { username: input.username, password: input.password },
       });
+      setSuccess("Successfully registered");
+      reset();
+      setTimeout(() => {
+        setSuccess("");
+      }, 5000);
     } catch (error) {
       if (error instanceof ApiError) {
         setError(`root.${error.message}`, {
@@ -34,6 +42,9 @@ const RegisterForm = () => {
   return (
     <form className={styles["register-form"]} onSubmit={handleSubmit(onSubmit)}>
       <h1>Register</h1>
+      {success.length > 0 ? (
+        <div className={styles.success}>{success}</div>
+      ) : null}
       <div>
         {Object.values(errors.root ?? {}).map((value, i) => (
           <div className={styles.error} key={i}>
