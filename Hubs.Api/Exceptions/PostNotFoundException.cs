@@ -1,8 +1,3 @@
 ﻿namespace Hubs.Api.Exceptions;
 
-public class PostNotFoundException : Exception
-{
-    public PostNotFoundException(string? message) : base(message)
-    {
-    }
-}
+public class PostNotFoundException(string? message) : Exception(message);

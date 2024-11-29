@@ -33,7 +33,7 @@ public class UserController : ControllerBase
         }
 
         var joinedHubs = await _context.HubMembers.Where(hm => hm.User.Id == user.Id)
-            .Select(h => new SidebarHubDto() { HubId = h.HubId, Name = h.Hub.Name }).ToListAsync();
+            .Select(h => new SidebarHubDto() { HubId = h.HubId, Name = h.Hub.Name, IsModerator = h.IsModerator}).ToListAsync();
 
         return TypedResults.Ok(new UserDto() { Username = user.UserName, UserId = user.Id, JoinedHubs = joinedHubs});
     }

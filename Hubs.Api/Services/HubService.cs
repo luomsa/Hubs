@@ -85,7 +85,7 @@ public class HubService : IHubService
         };
         await _context.HubMembers.AddAsync(hubMember);
         await _context.SaveChangesAsync();
-        return new SidebarHubDto() { Name = hub.Name, HubId = hub.HubId };
+        return new SidebarHubDto() { Name = hub.Name, HubId = hub.HubId, IsModerator = false};
     }
 
     public async Task<bool> LeaveHubAsync(string name, User user)

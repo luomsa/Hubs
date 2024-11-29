@@ -2,7 +2,6 @@
 using Hubs.Api.Data;
 using Hubs.Api.Exceptions;
 using Hubs.Api.Models;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hubs.Api.Services;
@@ -61,15 +60,12 @@ public partial class PostService : IPostService
                 p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)),
             _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, null)
         };
-        return await posts.Select(p => new PostDto()
+        return await posts.Where(p => !p.IsDeleted).Select(p => new PostDto(p.Hub.Name, p.PostId, p.Slug)
         {
             Author = new PostUserDto { UserId = p.Author.Id, Username = p.Author.UserName },
             Title = p.Title,
             Content = p.Content,
-            Slug = p.Slug,
-            PostId = p.PostId,
             Type = p.Type,
-            Hub = p.Hub.Name,
             CreatedAt = p.CreatedAt,
             UserVoteType = p.PostVotes.Where(pv => pv.User == user).Select(pv => (VoteType?)pv.VoteType)
                 .FirstOrDefault(),
@@ -80,15 +76,12 @@ public partial class PostService : IPostService
 
     public async Task<PostDto?> GetHubPostAsync(int postId, User? user)
     {
-        return await _context.Posts.Where(p => p.PostId == postId).Select(p => new PostDto()
+        return await _context.Posts.Where(p => p.PostId == postId).Select(p => new PostDto(p.Hub.Name, p.PostId, p.Slug)
         {
-            Author = new PostUserDto { UserId = p.Author.Id, Username = p.Author.UserName },
+            Author = p.IsDeleted ? null : new PostUserDto { UserId = p.Author.Id, Username = p.Author.UserName },
             Title = p.Title,
             Content = p.Content,
-            Slug = p.Slug,
-            PostId = p.PostId,
             Type = p.Type,
-            Hub = p.Hub.Name,
             CreatedAt = p.CreatedAt,
             UserVoteType = p.PostVotes.Where(pv => pv.User == user).Select(pv => (VoteType?)pv.VoteType)
                 .FirstOrDefault(),
@@ -140,15 +133,12 @@ public partial class PostService : IPostService
                                         p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)),
             _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, null)
         };
-        return await posts.Select(p => new PostDto()
+        return await posts.Where(p => !p.IsDeleted).Select(p => new PostDto(p.Hub.Name, p.PostId, p.Slug)
         {
             Author = new PostUserDto { UserId = p.Author.Id, Username = p.Author.UserName },
             Title = p.Title,
             Content = p.Content,
-            Slug = p.Slug,
-            PostId = p.PostId,
             Type = p.Type,
-            Hub = p.Hub.Name,
             CreatedAt = p.CreatedAt,
             UserVoteType = p.PostVotes.Where(pv => pv.User == user).Select(pv => (VoteType?)pv.VoteType)
                 .FirstOrDefault(),
@@ -180,22 +170,42 @@ public partial class PostService : IPostService
                 p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)),
             _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, null)
         };
-        return await posts.Select(p => new PostDto()
+        return await posts.Where(p => !p.IsDeleted).Select(p => new PostDto(p.Hub.Name, p.PostId, p.Slug)
         {
-            Author = new PostUserDto { UserId = p.Author.Id, Username = p.Author.UserName },
+            Author = new PostUserDto
+            {
+                UserId = p.Author.Id,
+                Username = p.Author.UserName
+            },
             Title = p.Title,
             Content = p.Content,
-            Slug = p.Slug,
-            PostId = p.PostId,
             Type = p.Type,
-            Hub = p.Hub.Name,
             CreatedAt = p.CreatedAt,
-            UserVoteType = p.PostVotes.Where(pv => pv.User == user).Select(pv => (VoteType?)pv.VoteType)
+            UserVoteType = p.PostVotes.Where(pv => pv.User == user)
+                .Select(pv => (VoteType?)pv.VoteType)
                 .FirstOrDefault(),
             VoteCount = p.PostVotes.Count(pv => pv.VoteType == VoteType.Like) -
-                        p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike)
+                        p.PostVotes.Count(pv => pv.VoteType == VoteType.Dislike),
         }).Skip(20 * page).Take(21).ToListAsync();
     }
+
+    public async Task DeletePost(User user, int postId)
+    {
+        var usr = await _context.Users.Include(u => u.HubMembers).FirstOrDefaultAsync(u => u.Id == user.Id);
+        if (usr is null) throw new Exception("User not found");
+        var post = await _context.Posts.Include(p => p.Hub).Include(p => p.Author)
+            .FirstOrDefaultAsync(p => p.PostId == postId);
+        if (post is null) throw new PostNotFoundException("Couldn't find the post");
+        if (usr.HubMembers.FirstOrDefault(hm =>
+                hm.HubId == post.Hub.HubId && (hm.IsModerator || post.Author.Id == user.Id)) is null)
+        {
+            throw new NotAuthorizedException("Not authorized");
+        }
+
+        post.IsDeleted = true;
+        await _context.SaveChangesAsync();
+    }
+
 
     [GeneratedRegex("[^a-zA-Z ]")]
     private static partial Regex SlugRegex();

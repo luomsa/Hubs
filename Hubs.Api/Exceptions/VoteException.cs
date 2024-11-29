@@ -1,8 +1,3 @@
 namespace Hubs.Api.Exceptions;
 
-public class VoteException : Exception
-{
-    public VoteException(string? message) : base(message)
-    {
-    }
-}
+public class VoteException(string? message) : Exception(message);

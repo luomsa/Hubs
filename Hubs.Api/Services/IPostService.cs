@@ -13,4 +13,6 @@ public interface IPostService
     public Task<List<PostDto>> GetHomeFeedPosts(User user, SortOrder sort, TimeSortOrder time, int page);
     public Task<List<PostDto>> GetPopularFeedPosts(User? user, SortOrder sort, TimeSortOrder time, int page);
 
+    public Task DeletePost(User user, int postId);
+
 }

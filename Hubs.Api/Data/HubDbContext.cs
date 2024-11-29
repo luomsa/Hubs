@@ -40,6 +40,7 @@ public class HubDbContext: IdentityDbContext
         builder.Entity<User>().Property(u => u.UserName).IsRequired();
         builder.Entity<User>().Property(u => u.NormalizedUserName).IsRequired();
         builder.Entity<Post>().Property(p => p.Type).HasConversion<string>();
+        builder.Entity<Post>().Property(p => p.IsDeleted).HasDefaultValue(false);
         builder.Entity<PostVote>().Property(pv => pv.VoteType).HasConversion<string>();
     }
 }

@@ -61,7 +61,7 @@ public class HubController : ControllerBase
     {
         var user = await _userManager.GetUserAsync(HttpContext.User);
         var posts = await _postService.GetHubPostsAsync(name, sort, time, page, user);
-        return TypedResults.Ok(new HubPostsDto() { Posts = posts.Count > 0 ? posts[..^1] : posts, HasMore = posts.Count == 21 });
+        return TypedResults.Ok(new HubPostsDto() { Posts = posts.Count > 20 ? posts[..^1] : posts, HasMore = posts.Count == 21 });
     }
 
     [Authorize]

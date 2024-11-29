@@ -58,7 +58,8 @@ public class PostController : ControllerBase
         var parsedId = int.TryParse(postId, out var id);
         if (parsedId is false) return TypedResults.BadRequest();
         var comments = await _commentService.GetPostCommentsAsync(id, page);
-        return TypedResults.Ok(new PostCommentsDto() { Comments = comments.Count > 0 ? comments[..^1] : comments, HasMore = comments.Count == 21 });
+        return TypedResults.Ok(new PostCommentsDto()
+            { Comments = comments.Count > 20 ? comments[..^1] : comments, HasMore = comments.Count == 21 });
     }
 
     [Authorize]
@@ -85,6 +86,19 @@ public class PostController : ControllerBase
         var user = await _userManager.GetUserAsync(HttpContext.User);
         if (user is null) return TypedResults.Unauthorized();
         await _postService.VotePost(id, voteType, user);
+        return TypedResults.Ok();
+    }
+
+    [Authorize]
+    [Route("{postId}")]
+    [HttpDelete]
+    public async Task<IResult> DeletePost(string postId)
+    {
+        var result = int.TryParse(postId, out var parsedId);
+        if (result is false) return TypedResults.BadRequest();
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+        if (user is null) return TypedResults.Unauthorized();
+        await _postService.DeletePost(user, parsedId);
         return TypedResults.Ok();
     }
 }

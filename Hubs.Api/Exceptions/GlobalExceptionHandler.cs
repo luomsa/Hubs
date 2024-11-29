@@ -38,6 +38,15 @@ public class GlobalExceptionHandler : IExceptionHandler
                 await httpContext.Response.WriteAsJsonAsync(problem, cancellationToken);
                 return true;
             }
+            case NotAuthorizedException ex:
+            {
+                const int statusCode = StatusCodes.Status401Unauthorized;
+                var problem = problemFactory.CreateProblemDetails(httpContext, statusCode,
+                    ex.Message);
+                httpContext.Response.StatusCode = statusCode;
+                await httpContext.Response.WriteAsJsonAsync(problem, cancellationToken);
+                return true;
+            }
             case VoteException ex:
             {
                 const int statusCode = StatusCodes.Status409Conflict;

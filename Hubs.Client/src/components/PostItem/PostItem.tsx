@@ -24,7 +24,7 @@ const PostItem = (props: Props) => {
               <p>hub/{props.hubName}</p> |
             </>
           )}
-          <p>{props.author.username}</p> |
+          {<p>{props.author?.username ?? "[deleted]"}</p>}|
           <time
             className={styles.time}
             title={new Date(props.createdAt).toString()}

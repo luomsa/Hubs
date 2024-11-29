@@ -507,7 +507,26 @@ export interface paths {
         };
         put?: never;
         post?: never;
-        delete?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    postId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -595,7 +614,7 @@ export interface paths {
         post: {
             parameters: {
                 query?: {
-                    type?: "Like" | "Dislike";
+                    type?: components["schemas"]["VoteType"];
                 };
                 header?: never;
                 path: {
@@ -748,19 +767,19 @@ export interface components {
             hasMore: boolean;
         };
         PostDto: {
-            title: string;
-            content: string;
-            slug: string;
-            author: components["schemas"]["PostUserDto"];
+            hub: string;
             /** Format: int32 */
             postId: number;
+            slug: string;
+            title: string;
+            content: string;
+            author?: components["schemas"]["PostUserDto"];
             /** Format: date-time */
             createdAt: string;
             /** Format: int32 */
             voteCount: number;
             userVoteType?: components["schemas"]["NullableOfVoteType"];
-            hub: string;
-            url?: string | null;
+            url: string;
             type: components["schemas"]["PostType"];
         };
         /** @enum {unknown} */
@@ -768,11 +787,12 @@ export interface components {
         PostUserDto: {
             userId: string;
             username: string;
-        };
+        } | null;
         SidebarHubDto: {
             /** Format: int32 */
-            hubId?: number;
+            hubId: number;
             name: string;
+            isModerator: boolean;
         };
         /**
          * @default New
@@ -789,6 +809,8 @@ export interface components {
             userId: string;
             joinedHubs: components["schemas"]["SidebarHubDto"][];
         };
+        /** @enum {unknown} */
+        VoteType: "Like" | "Dislike";
     };
     responses: never;
     parameters: never;

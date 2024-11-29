@@ -15,6 +15,8 @@ public class Post
     public DateTime CreatedAt { get; set; }
     public PostType Type { get; set; }
     public required Hub Hub { get; set; }
+    
+    public bool IsDeleted { get; set; }
     public ICollection<Comment> Comments { get; set; } = [];
     public ICollection<PostVote> PostVotes { get; set; } = [];
 }    

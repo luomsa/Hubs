@@ -1,8 +1,13 @@
-﻿.wrapper {
+﻿@value index: "./index.css";
+
+@value base from index;
+
+.wrapper {
   display: flex;
   height: 100%;
 }
+
 .main {
   margin: 0 auto;
-  width: 1000px;
+  overflow-x: hidden;
 }
