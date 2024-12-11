@@ -5,6 +5,7 @@ Users can:
 - Join hubs.
 - Create their own hubs.
 - Create posts on hubs.
+- Like and dislike posts
 - Comment on existing posts.
 
 This application is implemented using **ASP.NET** for the backend and **React** for the frontend. It is tested using the **Testcontainers** library.
@@ -17,6 +18,7 @@ This application is implemented using **ASP.NET** for the backend and **React** 
 
 ### Posts
 - Users can post on existing hubs.
+- Like and dislike posts
 - Posts are displayed in a paginated format for better performance.
   
 ### Comments
