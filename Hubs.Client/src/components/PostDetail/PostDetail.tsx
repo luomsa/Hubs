@@ -3,17 +3,22 @@ import styles from "./PostDetail.module.css";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useAuth } from "../../context/AuthContext.tsx";
-import client, { ApiError } from "../../api/http.ts";
+import client from "../../api/http.ts";
 import { useRevalidator } from "react-router-dom";
+import PostActions from "../PostActions/PostActions.tsx";
 
-const PostDetail = (props: PostDto) => {
+type Props = {
+  post: PostDto;
+  handleVote: (postId: string, type: string) => void;
+};
+const PostDetail = ({ post, handleVote }: Props) => {
   dayjs.extend(relativeTime);
   const { state } = useAuth();
   const validator = useRevalidator();
   const handleDelete = async () => {
     try {
       await client.DELETE(`/api/posts/{postId}`, {
-        params: { path: { postId: props.postId.toString() } },
+        params: { path: { postId: post.postId.toString() } },
       });
       validator.revalidate();
     } catch {}
@@ -22,24 +27,30 @@ const PostDetail = (props: PostDto) => {
     <div className={styles.post}>
       <div className={styles["post-content"]}>
         <div className={styles.details}>
-          {<p>{props.author?.username ?? "[deleted]"}</p>}|
+          {<p>{post.author?.username ?? "[deleted]"}</p>}|
           <time
             className={styles.time}
-            title={new Date(props.createdAt).toString()}
-            dateTime={props.createdAt}
+            title={new Date(post.createdAt).toString()}
+            dateTime={post.createdAt}
           >
-            {dayjs(props.createdAt).fromNow()}
+            {dayjs(post.createdAt).fromNow()}
           </time>
         </div>
-        <h2 className={styles.title}>{props.title}</h2>
-        {props.type === "Image" ? (
-          <img alt={"image"} src={props.content} />
+        <h2 className={styles.title}>{post.title}</h2>
+        {post.type === "Image" ? (
+          <img alt={"image"} src={post.content} />
         ) : (
-          <p>{props.content}</p>
+          <p>{post.content}</p>
         )}
-        {(state.user?.joinedHubs.find((h) => h.name === props.hub)
+        <PostActions
+          postId={post.postId.toString()}
+          voteCount={post.voteCount}
+          userVoteType={post.userVoteType}
+          onVote={handleVote}
+        />
+        {(state.user?.joinedHubs.find((h) => h.name === post.hub)
           ?.isModerator === true ||
-          state.user?.userId === props.author?.userId) && (
+          state.user?.userId === post.author?.userId) && (
           <button className={styles["delete-btn"]} onClick={handleDelete}>
             Delete
           </button>

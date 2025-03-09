@@ -15,15 +15,11 @@ export const postLoader = async ({ params }) => {
   if (params.name == null || params.postId == null || params.slug == null) {
     throw new Error("No parameters provided");
   }
-  const { data: post } = await client.GET("/api/posts/{postId}", {
-    params: {
-      path: { postId: params.postId },
-    },
-  });
+
   const { data: hub } = await client.GET(`/api/hubs/{name}`, {
     params: {
       path: { name: params.name },
     },
   });
-  return { post, hub };
+  return hub;
 };
