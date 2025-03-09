@@ -8,6 +8,10 @@ export type PostDetailType = {
   hub: HubDto;
 };
 export type CommentDto = components["schemas"]["CommentDto"];
+export type PostPages = {
+  hasMore: boolean;
+  posts: PostDto[];
+};
 export type HubParams = {
   name: string;
 };

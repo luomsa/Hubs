@@ -5,7 +5,13 @@ import {
   useRevalidator,
 } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { HubDto, HubParams, PostDto, SortBy, TopSortBy } from "../../types.ts";
+import {
+  HubDto,
+  HubParams,
+  PostPages,
+  SortBy,
+  TopSortBy,
+} from "../../types.ts";
 import client from "../../api/http.ts";
 import HubInfo from "../../components/HubInfo/HubInfo.tsx";
 import styles from "./Hub.module.css";
@@ -107,8 +113,8 @@ const Hub = () => {
     onSuccess: (_result, variables) => {
       queryClient.setQueryData(
         ["hubPosts", hub.name, page, { sort: sortBy, timeSort }],
-        (old: PostDto[]) => {
-          return old.map((post) => {
+        (old: PostPages) => {
+          const posts = old.posts.map((post) => {
             return post.postId.toString() === variables.postId
               ? {
                   ...post,
@@ -120,6 +126,7 @@ const Hub = () => {
                 }
               : post;
           });
+          return { hasMore: old.hasMore, posts };
         },
       );
     },

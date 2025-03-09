@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { PostDto, SortBy, TopSortBy } from "../../types.ts";
+import { PostPages, SortBy, TopSortBy } from "../../types.ts";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import client from "../../api/http.ts";
 import styles from "../Hub/Hub.module.css";
@@ -50,8 +50,8 @@ const Home = () => {
     onSuccess: (_result, variables) => {
       queryClient.setQueryData(
         ["homePosts", page, { sort: sortBy, timeSort }],
-        (old: PostDto[]) => {
-          return old.map((post) => {
+        (old: PostPages) => {
+          const posts = old.posts.map((post) => {
             return post.postId.toString() === variables.postId
               ? {
                   ...post,
@@ -63,6 +63,7 @@ const Home = () => {
                 }
               : post;
           });
+          return { hasMore: old.hasMore, posts };
         },
       );
     },
