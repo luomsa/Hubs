@@ -1,5 +1,6 @@
 ﻿using Hubs.Api.Data;
 using Hubs.Api.Models;
+using Hubs.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,12 @@ namespace Hubs.Api.Controllers;
 public class UserController : ControllerBase
 {
     private readonly SignInManager<User> _signInManager;
-    private readonly HubDbContext _context;
+    private readonly IUserService _userService;
 
-    public UserController(SignInManager<User> signInManager, HubDbContext context)
+    public UserController(SignInManager<User> signInManager, IUserService userService)
     {
         _signInManager = signInManager;
-        _context = context;
+        _userService = userService;
     }
 
     [Authorize]
@@ -32,17 +33,25 @@ public class UserController : ControllerBase
             return TypedResults.Unauthorized();
         }
 
-        var joinedHubs = await _context.HubMembers.Where(hm => hm.User.Id == user.Id)
-            .Select(h => new SidebarHubDto() { HubId = h.HubId, Name = h.Hub.Name, IsModerator = h.IsModerator}).ToListAsync();
+        var joinedHubs = await _userService.GetJoinedHubs(user);
 
-        return TypedResults.Ok(new UserDto() { Username = user.UserName, UserId = user.Id, JoinedHubs = joinedHubs});
+        return TypedResults.Ok(new UserDto() { Username = user.UserName, UserId = user.Id, JoinedHubs = joinedHubs });
     }
 
     [Authorize]
-    [Route("feed")]
+    [Route("posts")]
     [HttpGet]
-    public IResult GetFeed()
+    [ProducesResponseType<HubPostsDto>(StatusCodes.Status200OK)]
+    public async Task<IResult> GetUserPosts([FromQuery(Name = "time")] TimeSortOrder time = TimeSortOrder.Day, [FromQuery(Name = "page")] int page = 0,
+        [FromQuery(Name = "sort")] SortOrder sort = SortOrder.New)
     {
-        return TypedResults.Ok();
+        var user = await _signInManager.UserManager.GetUserAsync(HttpContext.User);
+        if (user is null)
+        {
+            return TypedResults.Unauthorized();
+        }
+
+        var posts = await _userService.GetUserPosts(user, sort, time, page);
+        return TypedResults.Ok(new HubPostsDto() {Posts = posts.Count > 20 ? posts[..^1] : posts, HasMore = posts.Count == 21});
     }
 }

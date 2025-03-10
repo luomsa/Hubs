@@ -10,7 +10,7 @@ type Props = PostDto & {
   page: number;
   sortBy: SortBy;
   timeSort: TopSortBy;
-  children: ReactNode;
+  children?: ReactNode;
 };
 const PostItem = (props: Props) => {
   dayjs.extend(relativeTime);

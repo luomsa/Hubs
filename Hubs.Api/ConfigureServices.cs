@@ -70,6 +70,7 @@ public static class ConfigureServices
         services.AddScoped<IPostService, PostService>();
         services.AddScoped<IHubService, HubService>();
         services.AddScoped<ICommentService, CommentService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddExceptionHandler<GlobalExceptionHandler>();
     }
 }

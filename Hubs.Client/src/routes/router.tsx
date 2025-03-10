@@ -9,6 +9,7 @@ import ProtectedRoute from "../components/ProtectedRoute.tsx";
 import HubErrorBoundary from "../components/HubErrorBoundary.tsx";
 import Authenticate from "./Authenticate/Authenticate.tsx";
 import { hubLoader, postLoader } from "./loaders.ts";
+import Profile from "./Profile/Profile.tsx";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
         loader: postLoader,
         element: <Post />,
         errorElement: <HubErrorBoundary />,
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
     ],
     errorElement: <HubErrorBoundary />,

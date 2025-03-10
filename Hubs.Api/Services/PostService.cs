@@ -41,16 +41,7 @@ public partial class PostService : IPostService
     public async Task<List<PostDto>> GetHubPostsAsync(string hubName, SortOrder sort, TimeSortOrder time, int page,
         User? user)
     {
-        var timeFilter = time switch
-        {
-            TimeSortOrder.Hour => DateTime.UtcNow.AddHours(-1),
-            TimeSortOrder.Day => DateTime.UtcNow.AddDays(-1),
-            TimeSortOrder.Week => DateTime.UtcNow.AddDays(-7),
-            TimeSortOrder.Month => DateTime.UtcNow.AddMonths(-1),
-            TimeSortOrder.Year => DateTime.UtcNow.AddYears(-1),
-            TimeSortOrder.AllTime => DateTime.MinValue,
-            _ => throw new ArgumentOutOfRangeException(nameof(time), time, null)
-        };
+        var timeFilter = HubsUtils.SortByTime(time);
         var posts = _context.Posts.Where(p => p.Hub.Name == hubName);
         posts = sort switch
         {
@@ -110,16 +101,7 @@ public partial class PostService : IPostService
 
     public async Task<List<PostDto>> GetHomeFeedPosts(User user, SortOrder sort, TimeSortOrder time, int page)
     {
-        var timeFilter = time switch
-        {
-            TimeSortOrder.Hour => DateTime.UtcNow.AddHours(-1),
-            TimeSortOrder.Day => DateTime.UtcNow.AddDays(-1),
-            TimeSortOrder.Week => DateTime.UtcNow.AddDays(-7),
-            TimeSortOrder.Month => DateTime.UtcNow.AddMonths(-1),
-            TimeSortOrder.Year => DateTime.UtcNow.AddYears(-1),
-            TimeSortOrder.AllTime => DateTime.MinValue,
-            _ => throw new ArgumentOutOfRangeException(nameof(time), time, null)
-        };
+        var timeFilter = HubsUtils.SortByTime(time);
         var joinedHubs = _context.Users
             .Where(u => u == user)
             .SelectMany(u => u.HubMembers.Select(hm => hm.Hub))

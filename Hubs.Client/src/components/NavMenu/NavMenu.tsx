@@ -6,7 +6,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import useDebounce from "../../utils/useDebounce.tsx";
 import client from "../../api/http.ts";
 import { HubSearchDto } from "../../types.ts";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IconMenu2 } from "@tabler/icons-react";
 import Button from "../ui/Button/Button.tsx";
 type Props = {
@@ -15,9 +15,8 @@ type Props = {
 const NavMenu = ({ toggleMenu }: Props) => {
   const { state, dispatch } = useAuth();
   const [search, setSearch] = useState("");
-
+  const navigate = useNavigate();
   const [debounceVal, setDebounceVal] = useState<HubSearchDto[]>([]);
-
   const debounceValue = useDebounce(search, 800);
   const searchResultsRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -92,7 +91,10 @@ const NavMenu = ({ toggleMenu }: Props) => {
         {state.user === null ? (
           <AuthModal />
         ) : (
-          <Button onClick={handleLogout}>Logout</Button>
+          <div className={styles["nav-actions"]}>
+            <Button onClick={handleLogout}>Logout</Button>
+            <Button onClick={() => navigate("/profile")}>Profile</Button>
+          </div>
         )}
       </div>
     </div>

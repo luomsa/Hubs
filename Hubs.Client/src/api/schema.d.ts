@@ -614,7 +614,7 @@ export interface paths {
         post: {
             parameters: {
                 query?: {
-                    type?: components["schemas"]["VoteType"];
+                    type?: "Like" | "Dislike";
                 };
                 header?: never;
                 path: {
@@ -676,7 +676,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/users/feed": {
+    "/api/users/posts": {
         parameters: {
             query?: never;
             header?: never;
@@ -685,7 +685,11 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    time?: components["schemas"]["TimeSortOrder"];
+                    page?: number;
+                    sort?: components["schemas"]["SortOrder"];
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -697,7 +701,11 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "text/plain": components["schemas"]["HubPostsDto"];
+                        "application/json": components["schemas"]["HubPostsDto"];
+                        "text/json": components["schemas"]["HubPostsDto"];
+                    };
                 };
             };
         };
@@ -809,8 +817,6 @@ export interface components {
             userId: string;
             joinedHubs: components["schemas"]["SidebarHubDto"][];
         };
-        /** @enum {unknown} */
-        VoteType: "Like" | "Dislike";
     };
     responses: never;
     parameters: never;

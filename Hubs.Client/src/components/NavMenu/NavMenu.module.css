@@ -46,6 +46,11 @@
 .logo {
   display: none;
 }
+.nav-actions {
+  margin-inline-start: 0.25rem;
+  display: flex;
+  gap: 0.5rem;
+}
 .mobile-button {
   display: block;
   cursor: pointer;
